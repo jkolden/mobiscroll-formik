@@ -11,8 +11,7 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Link from "@material-ui/core/Link";
 import Copyright from "../components/Copyright";
-import Chart from "../components/Chart";
-import PieChart from "../components/PieChart";
+import DefaultDate from "../assets/static/DefaultDate";
 
 import WeekSelectorHooks from "../components/WeekSelectorHooks";
 import Timecards from "../components/Timecards";
@@ -99,7 +98,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Home() {
-  const [selectedDays, setSelectedDays] = useState([]);
+  const [selectedDays, setSelectedDays] = useState(DefaultDate);
   const [timecards, setTimecards] = useState([]);
 
   useEffect(() => {
@@ -108,6 +107,7 @@ export default function Home() {
       selectedDays.length > 0
         ? selectedDays[0].toLocaleDateString()
         : "3/15/2020";
+    console.log(selectedDays);
 
     fetch(
       `https://apex.oracle.com/pls/apex/myfusion/bdo/test/?start_date=${startDay}`

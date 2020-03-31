@@ -5,6 +5,7 @@ import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Title from "./Title";
+import DateFormat from "../utilities/DateFormat";
 
 function preventDefault(event) {
   event.preventDefault();
@@ -28,12 +29,15 @@ export default function DailyHours(props) {
   return (
     <React.Fragment>
       <Typography variant="h6">Total Hours for this Timecard</Typography>
-      <Typography component="p" variant="h4">
-        {sum}
+      <Typography
+        variant="h6"
+        color="textPrimary"
+        className={classes.depositContext}
+      >
+        {entries.length > 0 &&
+          DateFormat(new Date(entries[0]["hourlyEntry"].exp_date))}
       </Typography>
-      <Typography color="textSecondary" className={classes.depositContext}>
-        {entries.length > 0 && entries[0]["hourlyEntry"].exp_date}
-      </Typography>
+      <Typography variant="h4">{sum}</Typography>
     </React.Fragment>
   );
 }

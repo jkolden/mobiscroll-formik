@@ -2,12 +2,16 @@ import React, { useState, useContext } from "react";
 import { EntriesContext } from "../EntriesContext";
 import { v4 as uuidv4 } from "uuid";
 import InputNumber from "rc-input-number";
+import NumPad from "react-numpad";
+
+import DateFormat from "../utilities/DateFormat";
 
 /* import mobiscroll */
 import mobiscroll from "@mobiscroll/react-lite";
 import "@mobiscroll/react-lite/dist/css/mobiscroll.min.css";
 
-/* Icons */
+import Projects from "../assets/static/Projects";
+import Tasks from "../assets/static/Tasks";
 
 function Form({ match }) {
   const [entries, setEntries] = useContext(EntriesContext);
@@ -20,16 +24,6 @@ function Form({ match }) {
     timeCardDate.getUTCDate() +
     "/" +
     timeCardDate.getFullYear();
-
-  const ye = new Intl.DateTimeFormat("en", { year: "numeric" }).format(
-    timeCardDate
-  );
-  const mo = new Intl.DateTimeFormat("en", { month: "long" }).format(
-    timeCardDate
-  );
-  const da = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(
-    timeCardDate
-  );
 
   const projects = [
     { BDO0001: "BDO Internal Productivity" },
@@ -73,7 +67,7 @@ function Form({ match }) {
 
   return (
     <mobiscroll.Page>
-      <h3>{`${mo} ${da}, ${ye}`}</h3>
+      <h3>{DateFormat(timeCardDate)}</h3>
       <mobiscroll.Form onSubmit={handleSubmit}>
         <mobiscroll.FormGroup>
           <mobiscroll.FormGroupTitle>
@@ -86,7 +80,7 @@ function Form({ match }) {
             onChange={handleChange("project")}
           >
             <option>Select</option>
-            {projects.map(project => (
+            {Projects.map(project => (
               <option key={Object.keys(project)} value={Object.keys(project)}>
                 {`${Object.values(project)}`}
               </option>
@@ -99,7 +93,7 @@ function Form({ match }) {
           >
             <option>Select</option>
             {hourlyEntry["project"] &&
-              mytasks["DS00009"].map(obj => (
+              Tasks[hourlyEntry["project"]].map(obj => (
                 <option key={Object.keys(obj)} value={Object.keys(obj)}>
                   {`${Object.values(obj)}`}
                 </option>
@@ -154,6 +148,7 @@ function Form({ match }) {
         </div>
 
         <InputNumber
+          className="mbsc-align-right"
           step={0.5}
           name="hours"
           min={0}
@@ -162,6 +157,7 @@ function Form({ match }) {
           onChange={handleHourly("hours")}
         />
         <label>Hours</label>
+        <div></div>
 
         <div className="mbsc-btn-group-block">
           <mobiscroll.Button type="submit">Save</mobiscroll.Button>

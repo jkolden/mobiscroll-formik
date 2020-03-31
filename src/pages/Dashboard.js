@@ -16,6 +16,7 @@ import Paper from "@material-ui/core/Paper";
 import DailyHours from "../components/DailyHours";
 import SimpleList from "../SimpleList";
 import SnackBar from "../components/SnackBar";
+import Chicago from "../assets/images/Chicago.jpg";
 
 /* import mobiscroll */
 import mobiscroll from "@mobiscroll/react-lite";

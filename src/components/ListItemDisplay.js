@@ -15,6 +15,12 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import CommentIcon from "@material-ui/icons/Comment";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import Chicago from "../assets/images/Chicago.jpg";
+import Denver from "../assets/images/Denver.png";
+import Grand from "../assets/images/GrandRapids.gif";
+
+import Projects from "../assets/static/Projects";
+import Tasks from "../assets/static/Tasks";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,14 +39,30 @@ export default function ListItemDisplay(props) {
   const { entry, filter } = props;
   const classes = useStyles();
 
+  const findProject = pProject => {
+    let obj = Projects.find(o => Object.keys(o) == pProject);
+    return Object.values(obj);
+  };
+
+  const findTask = (pProject, pTask) => {
+    let obj = Tasks[pProject].find(o => Object.keys(o) == pTask);
+    return Object.values(obj);
+  };
+
+  const images = {
+    Chicago: Chicago,
+    Denver: Denver,
+    "Grand Rapids": Grand
+  };
+
   return (
     <div>
       <ListItem alignItems="flex-start" divider>
         <ListItemAvatar>
-          <Avatar alt={entry.locality} src="/static/images/avatar/1.jpg" />
+          <Avatar alt={entry.locality} src={images[entry.locality]} />
         </ListItemAvatar>
         <ListItemText
-          primary={`Project: ${entry.project}`}
+          primary={`Project: ${findProject(entry.project)}`}
           secondary={
             <React.Fragment>
               <Typography
@@ -49,11 +71,12 @@ export default function ListItemDisplay(props) {
                 className={classes.inline}
                 color="textPrimary"
               >
-                {`Hours: ${entry.hours}`}
+                {`${findTask(entry.project, entry.task)}, ${entry.hours} Hours`}
               </Typography>
             </React.Fragment>
           }
         />
+
         <ListItemSecondaryAction>
           <IconButton
             edge="end"
