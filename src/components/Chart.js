@@ -1,5 +1,6 @@
 import React from "react";
 import { useTheme } from "@material-ui/core/styles";
+import { Typography } from "@material-ui/core";
 import {
   LineChart,
   Line,
@@ -25,15 +26,24 @@ const data = [
   createData("Sat", 0)
 ];
 
-export default function Chart() {
+export default function Chart(props) {
+  const { timecards } = props;
   const theme = useTheme();
+
+  console.log(theme.palette.primary.main);
+
+  const newData = timecards.map(timecard =>
+    createData(timecard.card_title, timecard.hours)
+  );
 
   return (
     <React.Fragment>
-      <Title>This Week's Hours</Title>
+      <Typography variant="h6" gutterBottom>
+        Weekly Hours
+      </Typography>
       <ResponsiveContainer>
         <LineChart
-          data={data}
+          data={newData}
           margin={{
             top: 16,
             right: 16,

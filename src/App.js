@@ -1,16 +1,27 @@
-import React, { useState, useEffect } from "react";
-import { Grid, CssBaseline } from "@material-ui/core";
-import TopNav from "./TopNav";
-import Settings from "./Settings";
+import React, { useState } from "react";
+import {
+  withRouter,
+  BrowserRouter as Router,
+  Link,
+  Switch,
+  Route
+} from "react-router-dom";
+import mobiscroll from "@mobiscroll/react-lite";
+
+import { Grid, CssBaseline, ThemeProvider } from "@material-ui/core";
+
+import { createMuiTheme } from "@material-ui/core/styles";
+
+import TopNav from "./navigation/TopNav";
 //import ReactDOM from "react-dom";
 import { createBrowserHistory } from "history";
-import { Router, Route, Switch } from "react-router-dom";
-
 // pages for this product
-import Mobiscroll from "./Mobiscroll";
-import BottomNav from "./BottomNav";
+import Form from "./pages/Form";
+import BottomNav from "./navigation/BottomNav";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
+import Settings from "./pages/Settings";
+import Analytics from "./pages/Analytics";
 
 import { EntriesProvider } from "./EntriesContext";
 
@@ -20,35 +31,73 @@ const containerStyles = {
   textAlign: "center"
 };
 
-function App() {
+const App = () => {
+  const [themeMode, setThemeMode] = useState("light");
   const [tab, setTab] = useState(0);
   let hist = createBrowserHistory();
+
+  let theme = createMuiTheme({
+    palette: {
+      type: themeMode,
+      primary: {
+        main: themeMode === "light" ? "#4791db" : "#111"
+      }
+    }
+  });
 
   function renderView() {
     switch (tab) {
       case 0:
         return <Home />;
       case 1:
-        return <Mobiscroll />;
-      case 2:
         return <Dashboard />;
+      case 2:
+        return <Settings />;
       default:
         return new Error("This page does not exist");
     }
   }
+  const handleLightMode = () => {
+    document.querySelector("body").style.backgroundColor = "#fff";
+    setThemeMode("light");
+    mobiscroll.settings = {
+      theme: "material"
+    };
+  };
+
+  const handleDarkMode = () => {
+    document.querySelector("body").style.backgroundColor = "#111";
+    setThemeMode("dark");
+    mobiscroll.settings = {
+      theme: "material-dark"
+    };
+  };
 
   return (
-    <EntriesProvider>
-      <div>
-        <Grid container direction="column">
-          <TopNav />
-          <div style={containerStyles}>{renderView()}</div>
-          <BottomNav value={tab} onChange={setTab} />
-        </Grid>
-        <CssBaseline />
-      </div>
-    </EntriesProvider>
-  );
-}
+    <ThemeProvider theme={theme}>
+      <EntriesProvider>
+        <div>
+          <Grid container direction="column">
+            <TopNav
+              themeMode={themeMode}
+              lightMode={handleLightMode}
+              darkMode={handleDarkMode}
+            />
 
-export default App;
+            <div style={containerStyles}>
+              <Route exact path="/" component={Home} />
+              <Route path="/form/:date" component={Form} />
+              <Route path="/dashboard" component={Dashboard} />
+              <Route path="/analytics" component={Analytics} />
+              <Route path="/settings" component={Settings} />
+            </div>
+            <BottomNav value={tab} onChange={setTab} />
+          </Grid>
+          <CssBaseline />
+        </div>
+      </EntriesProvider>
+    </ThemeProvider>
+  );
+};
+
+export default withRouter(App);

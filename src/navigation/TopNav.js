@@ -10,10 +10,16 @@ import {
   Slide,
   Icon
 } from "@material-ui/core";
-import { Menu, KeyboardBackspace, Favorite } from "@material-ui/icons";
+import {
+  Menu,
+  KeyboardBackspace,
+  Favorite,
+  Brightness2,
+  Brightness7
+} from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 
-import emily from "./assets/images/emily.jpg";
+import emily from "../assets/images/emily.jpg";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -35,20 +41,32 @@ const SlideTransition = React.forwardRef(function TransitionComponent(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function TopNav() {
+export default function TopNav({ themeMode, lightMode, darkMode }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [dialogueOpen, setDialogueOpen] = useState(false);
 
   return (
-    <AppBar position="static" color="primary">
+    <AppBar position="static" thememode={themeMode}>
       <Toolbar>
         <IconButton color="inherit" onClick={() => setOpen(!open)}>
           <Menu />
         </IconButton>
+        <div style={{ flex: 12 }} />
+        {themeMode === "light" ? (
+          <IconButton color="inherit" onClick={darkMode}>
+            <Brightness2 />
+          </IconButton>
+        ) : (
+          <IconButton color="inherit" onClick={lightMode}>
+            <Brightness7 />
+          </IconButton>
+        )}
+
         <div style={{ flexGrow: 1 }} />
         <Avatar src={emily} onClick={() => setDialogueOpen(true)}></Avatar>
-      </Toolbar>{" "}
+      </Toolbar>
+
       <SwipeableDrawer
         open={open}
         onClose={() => setOpen(false)}

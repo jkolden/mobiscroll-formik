@@ -27,18 +27,13 @@ export default function DailyHours(props) {
 
   return (
     <React.Fragment>
-      <Title>Total Hours for this Timecard</Title>
+      <Typography variant="h6">Total Hours for this Timecard</Typography>
       <Typography component="p" variant="h4">
         {sum}
       </Typography>
       <Typography color="textSecondary" className={classes.depositContext}>
-        15 March, 2019
+        {entries.length > 0 && entries[0]["hourlyEntry"].exp_date}
       </Typography>
-      <div>
-        <Link color="primary" href="#" onClick={preventDefault}>
-          View balance
-        </Link>
-      </div>
     </React.Fragment>
   );
 }

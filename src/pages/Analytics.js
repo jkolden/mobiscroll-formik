@@ -1,34 +1,27 @@
-import React, { useContext, useEffect, useState } from "react";
-import { EntriesContext } from "../EntriesContext";
-import { KeyboardBackspace } from "@material-ui/icons";
-import { Link } from "react-router-dom";
-
+import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Box from "@material-ui/core/Box";
-import { IconButton } from "@material-ui/core";
 
 import Typography from "@material-ui/core/Typography";
+
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import DailyHours from "../components/DailyHours";
-import SimpleList from "../SimpleList";
-import SnackBar from "../components/SnackBar";
+import Link from "@material-ui/core/Link";
+import Copyright from "../components/Copyright";
+import Chart from "../components/Chart";
+import PieChart from "../components/PieChart";
 
-/* import mobiscroll */
-import mobiscroll from "@mobiscroll/react-lite";
-import "@mobiscroll/react-lite/dist/css/mobiscroll.min.css";
+import WeekSelectorHooks from "../components/WeekSelectorHooks";
+import Timecards from "../components/Timecards";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: "flex"
-  },
-  float: {
-    float: "left"
   },
   toolbar: {
     paddingRight: 24 // keep right padding when drawer closed
@@ -101,37 +94,11 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column"
   },
   fixedHeight: {
-    height: 180
+    height: 350
   }
 }));
 
-export default function Dashboard() {
-  const [entries, setEntries] = useContext(EntriesContext);
-  const [total, setTotal] = useState();
-  const [open, setOpen] = useState(false);
-
-  const sum = entries.reduce(function(tot, record) {
-    return tot + record.hourlyEntry.hours;
-  }, 0);
-
-  const filter = id => {
-    const filtered = entries.filter(entry => entry.hourlyEntry.id !== id);
-    setEntries(filtered);
-  };
-
-  useEffect(() => {
-    setTotal(sum);
-  }, []);
-
-  const handleSubmit = () => {
-    fetch("https://apex.oracle.com/pls/apex/myfusion/bdo/web_hours/", {
-      method: "POST",
-      body: JSON.stringify(entries)
-    });
-    setOpen(true);
-    setEntries([]);
-  };
-
+export default function Analytics() {
   const classes = useStyles();
 
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
@@ -141,44 +108,33 @@ export default function Dashboard() {
       <CssBaseline />
 
       <main className={classes.content}>
-        {entries.length > 0 && (
-          <Link to={`/form/${entries[0]["hourlyEntry"].isoDate}`}>
-            <IconButton className={classes.float}>
-              <KeyboardBackspace />
-            </IconButton>
-          </Link>
-        )}
-
         <div className={classes.appBarSpacer} />
+        <Typography variant="h5" gutterBottom>
+          Analytics
+        </Typography>
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            {/* This Timecard */}
-            <Grid item xs={12} md={4} lg={3}>
+            {/*
+            <Grid item xs={12} md={4} lg={4}>
               <Paper className={fixedHeightPaper}>
-                <DailyHours total={total} />
+               <Chart timecards={timecards} />
               </Paper>
             </Grid>
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper>
-                <SimpleList setTotal={setTotal} sum={sum} filter={filter} />
+            */}
+
+            <Grid item xs={12} md={4} lg={4}>
+              <Paper className={fixedHeightPaper}>
+                <PieChart />
               </Paper>
             </Grid>
           </Grid>
+
+          <Grid item xs={12} md={4} lg={3}></Grid>
           <Box pt={4}>
-            <div className="mbsc-btn-group-block">
-              <mobiscroll.Button
-                type="submit"
-                color="primary"
-                onClick={handleSubmit}
-                disabled={!entries.length}
-              >
-                Submit
-              </mobiscroll.Button>
-            </div>
+            <Copyright />
           </Box>
         </Container>
       </main>
-      <SnackBar open={open} setOpen={setOpen} />
     </div>
   );
 }

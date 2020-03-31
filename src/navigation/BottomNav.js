@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
-import { EntriesContext } from "./EntriesContext";
+import { Link } from "react-router-dom";
+import { EntriesContext } from "../EntriesContext";
 /* import mobiscroll */
 import {
   BottomNavigation,
@@ -12,24 +13,42 @@ import "@mobiscroll/react-lite/dist/css/mobiscroll.min.css";
 /* Icons */
 
 import List from "@material-ui/icons/List";
-import EditIcon from "@material-ui/icons/Edit";
+import Settings from "@material-ui/icons/Settings";
+import PieChartIcon from "@material-ui/icons/PieChart";
 import Home from "@material-ui/icons/Home";
-import Mobiscroll from "./Mobiscroll";
 
 function BottomNav({ val, onChange }) {
   const [entries, setEntries] = useContext(EntriesContext);
 
   return (
     <BottomNavigation value={val} onChange={(e, tab) => onChange(tab)}>
-      <BottomNavigationAction label="Home" icon={<Home />} />
-      <BottomNavigationAction label="Time Entry" icon={<EditIcon />} />
       <BottomNavigationAction
+        component={Link}
+        to="/"
+        label="Home"
+        icon={<Home />}
+      />
+      <BottomNavigationAction
+        component={Link}
+        to="/dashboard"
         label="Hours"
         icon={
           <Badge badgeContent={entries.length} color="secondary">
             <List />
           </Badge>
         }
+      />
+      <BottomNavigationAction
+        component={Link}
+        to="/analytics"
+        label="Analytics"
+        icon={<PieChartIcon />}
+      />
+      <BottomNavigationAction
+        component={Link}
+        to="/settings"
+        label="Settings"
+        icon={<Settings />}
       />
     </BottomNavigation>
   );

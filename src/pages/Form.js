@@ -1,30 +1,38 @@
 import React, { useState, useContext } from "react";
-import { EntriesContext } from "./EntriesContext";
+import { EntriesContext } from "../EntriesContext";
 import { v4 as uuidv4 } from "uuid";
 import InputNumber from "rc-input-number";
 
 /* import mobiscroll */
 import mobiscroll from "@mobiscroll/react-lite";
 import "@mobiscroll/react-lite/dist/css/mobiscroll.min.css";
-/*
-import { DatePicker } from "@material-ui/pickers";
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import MomentUtils from "@date-io/moment";
-*/
-import SimpleList from "./SimpleList";
 
 /* Icons */
 
-mobiscroll.settings = {
-  theme: "auto"
-};
-
-function Mobiscroll() {
+function Form({ match }) {
   const [entries, setEntries] = useContext(EntriesContext);
   const [hourlyEntry, setHourlyEntry] = useState({});
 
+  const timeCardDate = new Date(match.params.date);
+  const formattedDate =
+    parseInt(timeCardDate.getUTCMonth() + 1) +
+    "/" +
+    timeCardDate.getUTCDate() +
+    "/" +
+    timeCardDate.getFullYear();
+
+  const ye = new Intl.DateTimeFormat("en", { year: "numeric" }).format(
+    timeCardDate
+  );
+  const mo = new Intl.DateTimeFormat("en", { month: "long" }).format(
+    timeCardDate
+  );
+  const da = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(
+    timeCardDate
+  );
+
   const projects = [
-    { BD00001: "BDO Internal Productivity" },
+    { BDO0001: "BDO Internal Productivity" },
     { DS00009: "BDO Dixon Industries" },
     { PCS10045: "BDO Milestone Billing Project" }
   ];
@@ -38,10 +46,6 @@ function Mobiscroll() {
         "2.2": "Custom Help Screens"
       }
     ]
-  };
-
-  const handleClick = () => {
-    console.log(hourlyEntry);
   };
 
   const handleChange = name => event => {
@@ -61,11 +65,15 @@ function Mobiscroll() {
   const handleSubmit = event => {
     event.preventDefault();
     hourlyEntry.id = uuidv4();
+    hourlyEntry.exp_date = formattedDate;
+    hourlyEntry.isoDate = timeCardDate;
+
     setEntries(prevEntries => [...prevEntries, { hourlyEntry }]);
   };
 
   return (
     <mobiscroll.Page>
+      <h3>{`${mo} ${da}, ${ye}`}</h3>
       <mobiscroll.Form onSubmit={handleSubmit}>
         <mobiscroll.FormGroup>
           <mobiscroll.FormGroupTitle>
@@ -80,7 +88,7 @@ function Mobiscroll() {
             <option>Select</option>
             {projects.map(project => (
               <option key={Object.keys(project)} value={Object.keys(project)}>
-                {`${Object.keys(project)} - ${Object.values(project)}`}
+                {`${Object.values(project)}`}
               </option>
             ))}
           </mobiscroll.Dropdown>
@@ -93,7 +101,7 @@ function Mobiscroll() {
             {hourlyEntry["project"] &&
               mytasks["DS00009"].map(obj => (
                 <option key={Object.keys(obj)} value={Object.keys(obj)}>
-                  {`${Object.keys(obj)} - ${Object.values(obj)}`}
+                  {`${Object.values(obj)}`}
                 </option>
               ))}
           </mobiscroll.Dropdown>
@@ -103,7 +111,7 @@ function Mobiscroll() {
           <div className="mbsc-form-group-title">Work Type</div>
           <mobiscroll.Segmented
             name="worktype"
-            value="internal"
+            value="Internal"
             checked={hourlyEntry["worktype"] === "internal"}
             onChange={handleChange("worktype")}
           >
@@ -111,7 +119,7 @@ function Mobiscroll() {
           </mobiscroll.Segmented>
           <mobiscroll.Segmented
             name="worktype"
-            value="external"
+            value="External"
             checked={hourlyEntry["worktype"] === "external"}
             onChange={handleChange("worktype")}
           >
@@ -158,12 +166,9 @@ function Mobiscroll() {
         <div className="mbsc-btn-group-block">
           <mobiscroll.Button type="submit">Save</mobiscroll.Button>
         </div>
-        <div className="mbsc-btn-group-block">
-          <mobiscroll.Button onClick={handleClick}>Log</mobiscroll.Button>
-        </div>
       </mobiscroll.Form>
     </mobiscroll.Page>
   );
 }
 
-export default Mobiscroll;
+export default Form;
