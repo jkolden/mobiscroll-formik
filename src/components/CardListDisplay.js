@@ -55,7 +55,9 @@ export default function CardListDisplay(props) {
         />
         <ListItemSecondaryAction>
           {timecard.date_submitted === "Not Submitted" && (
-            <Link to={`/form/${timecard.timecard_date}`}>
+            <Link
+              to={1 == 2 ? `/form/${timecard.timecard_date}` : `/dashboard`}
+            >
               <IconButton edge="end" aria-label="delete">
                 <ChevronRightIcon />
               </IconButton>

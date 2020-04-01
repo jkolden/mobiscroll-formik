@@ -8,6 +8,7 @@ import CardListDisplay from "../components/CardListDisplay";
 import Paper from "@material-ui/core/Paper";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
+import DateFormat from "../utilities/DateFormat";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,6 +34,7 @@ const useStyles = makeStyles(theme => ({
 
 const Timecards = props => {
   const { timecards, startdate } = props;
+  let displayDate = new Date(startdate);
 
   const classes = useStyles();
 
@@ -42,7 +44,7 @@ const Timecards = props => {
         <Paper className={classes.paper}>
           <List className={classes.root}>
             <h2>Timecards for Week:</h2>
-            <h3>{startdate}</h3>
+            <h3>{DateFormat(displayDate)}</h3>
             {timecards.map(timecard => (
               <CardListDisplay key={timecard.card_title} timecard={timecard} />
             ))}

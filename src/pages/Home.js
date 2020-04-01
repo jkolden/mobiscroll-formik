@@ -11,7 +11,7 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Link from "@material-ui/core/Link";
 import Copyright from "../components/Copyright";
-import DefaultDate from "../assets/static/DefaultDate";
+import DefaultDate from "../utilities/DefaultDate";
 
 import WeekSelectorHooks from "../components/WeekSelectorHooks";
 import Timecards from "../components/Timecards";
@@ -107,13 +107,13 @@ export default function Home() {
       selectedDays.length > 0
         ? selectedDays[0].toLocaleDateString()
         : "3/15/2020";
-    console.log(selectedDays);
 
     fetch(
-      `https://apex.oracle.com/pls/apex/myfusion/bdo/test/?start_date=${startDay}`
+      `https://apex.oracle.com/pls/apex/myfusion/bdo/web_sheets/?start_date=${startDay}`
     )
       .then(res => res.json())
       .then(data => setTimecards(data.items));
+    console.log(timecards);
   }, [selectedDays]);
 
   const classes = useStyles();
@@ -139,18 +139,6 @@ export default function Home() {
                 />
               </Paper>
             </Grid>
-            {/*
-            <Grid item xs={12} md={4} lg={4}>
-              <Paper className={fixedHeightPaper}>
-               <Chart timecards={timecards} />
-              </Paper>
-            </Grid>
-            */}
-            {/*
-            <Grid item xs={12} md={4} lg={4}>
-              <Paper className={fixedHeightPaper}><PieChart /></Paper>
-            </Grid>
-               */}
           </Grid>
 
           <Grid item xs={12} md={12} lg={12}>

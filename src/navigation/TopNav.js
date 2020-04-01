@@ -14,7 +14,7 @@ import {
   Menu,
   KeyboardBackspace,
   Favorite,
-  Brightness2,
+  Brightness4,
   Brightness7
 } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
@@ -55,7 +55,7 @@ export default function TopNav({ themeMode, lightMode, darkMode }) {
         <div style={{ flex: 12 }} />
         {themeMode === "light" ? (
           <IconButton color="inherit" onClick={darkMode}>
-            <Brightness2 />
+            <Brightness4 />
           </IconButton>
         ) : (
           <IconButton color="inherit" onClick={lightMode}>

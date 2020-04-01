@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { EntriesContext } from "../EntriesContext";
 import { v4 as uuidv4 } from "uuid";
 import InputNumber from "rc-input-number";
@@ -15,9 +15,10 @@ import Tasks from "../assets/static/Tasks";
 
 function Form({ match }) {
   const [entries, setEntries] = useContext(EntriesContext);
-  const [hourlyEntry, setHourlyEntry] = useState({});
+  const [hourlyEntry, setHourlyEntry] = useState({ hours: "" });
 
   const timeCardDate = new Date(match.params.date);
+
   const formattedDate =
     parseInt(timeCardDate.getUTCMonth() + 1) +
     "/" +
@@ -42,6 +43,24 @@ function Form({ match }) {
     ]
   };
 
+  //
+  useEffect(() => {
+    // Update the document title using the browser API
+    fetch(
+      `https://apex.oracle.com/pls/apex/myfusion/bdo/web_hours/?timecard_date=${formattedDate}`
+    )
+      .then(res => res.json())
+      .then(data => setEntries(data));
+    console.log(entries);
+  }, []);
+
+  const handleNumberChange = name => event => {
+    setHourlyEntry({
+      ...hourlyEntry,
+      [name]: event.target.valueAsNumber
+    });
+  };
+
   const handleChange = name => event => {
     setHourlyEntry({
       ...hourlyEntry,
@@ -49,25 +68,19 @@ function Form({ match }) {
     });
   };
 
-  const handleHourly = name => value => {
-    setHourlyEntry({
-      ...hourlyEntry,
-      hours: value
-    });
-  };
-
   const handleSubmit = event => {
     event.preventDefault();
     hourlyEntry.id = uuidv4();
     hourlyEntry.exp_date = formattedDate;
-    hourlyEntry.isoDate = timeCardDate;
+    hourlyEntry.isoDate = new Date(match.params.date); //uses browser date
+    console.log(hourlyEntry);
 
     setEntries(prevEntries => [...prevEntries, { hourlyEntry }]);
   };
 
   return (
     <mobiscroll.Page>
-      <h3>{DateFormat(timeCardDate)}</h3>
+      <h3>{JSON.stringify(timeCardDate)}</h3>
       <mobiscroll.Form onSubmit={handleSubmit}>
         <mobiscroll.FormGroup>
           <mobiscroll.FormGroupTitle>
@@ -147,17 +160,22 @@ function Form({ match }) {
           </mobiscroll.Radio>
         </div>
 
-        <InputNumber
-          className="mbsc-align-right"
-          step={0.5}
-          name="hours"
-          min={0}
-          max={12}
-          value={hourlyEntry["hours"]}
-          onChange={handleHourly("hours")}
-        />
-        <label>Hours</label>
-        <div></div>
+        <div>
+          <label htmlFor="hours">Hours</label>
+          <input
+            style={{ textAlign: "right" }}
+            required
+            id="hours"
+            name="hours"
+            type="number"
+            inputMode="decimal"
+            min={0.0}
+            max={12}
+            step={0.5}
+            value={hourlyEntry["hours"]}
+            onChange={handleNumberChange("hours")}
+          />
+        </div>
 
         <div className="mbsc-btn-group-block">
           <mobiscroll.Button type="submit">Save</mobiscroll.Button>

@@ -7,10 +7,6 @@ import Typography from "@material-ui/core/Typography";
 import Title from "./Title";
 import DateFormat from "../utilities/DateFormat";
 
-function preventDefault(event) {
-  event.preventDefault();
-}
-
 const useStyles = makeStyles({
   depositContext: {
     flex: 1
@@ -21,6 +17,8 @@ export default function DailyHours(props) {
   const [entries, setEntries] = useContext(EntriesContext);
   const { total } = props;
   const classes = useStyles();
+
+  console.log(entries);
 
   const sum = entries.reduce(function(tot, record) {
     return tot + record.hourlyEntry.hours;

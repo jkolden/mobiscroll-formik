@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { EntriesContext } from "../EntriesContext";
 import { KeyboardBackspace } from "@material-ui/icons";
-import { Link } from "react-router-dom";
+import { Link, Redirect, useHistory } from "react-router-dom";
 
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
@@ -16,7 +16,6 @@ import Paper from "@material-ui/core/Paper";
 import DailyHours from "../components/DailyHours";
 import SimpleList from "../SimpleList";
 import SnackBar from "../components/SnackBar";
-import Chicago from "../assets/images/Chicago.jpg";
 
 /* import mobiscroll */
 import mobiscroll from "@mobiscroll/react-lite";
@@ -108,8 +107,11 @@ const useStyles = makeStyles(theme => ({
 
 export default function Dashboard() {
   const [entries, setEntries] = useContext(EntriesContext);
+  const [redirect, setRedirect] = useState(false);
   const [total, setTotal] = useState();
   const [open, setOpen] = useState(false);
+
+  const history = useHistory();
 
   const sum = entries.reduce(function(tot, record) {
     return tot + record.hourlyEntry.hours;
@@ -131,6 +133,10 @@ export default function Dashboard() {
     });
     setOpen(true);
     setEntries([]);
+  };
+
+  const handleRedirect = () => {
+    history.push("/");
   };
 
   const classes = useStyles();
@@ -167,6 +173,11 @@ export default function Dashboard() {
           </Grid>
           <Box pt={4}>
             <div className="mbsc-btn-group-block">
+              <div className="mbsc-btn-group-block">
+                <mobiscroll.Button type="submit" color="primary">
+                  Add Time
+                </mobiscroll.Button>
+              </div>
               <mobiscroll.Button
                 type="submit"
                 color="primary"
@@ -175,6 +186,11 @@ export default function Dashboard() {
               >
                 Submit
               </mobiscroll.Button>
+              <div className="mbsc-btn-group-block">
+                <mobiscroll.Button color="primary" onClick={handleRedirect}>
+                  Redirect to Hom
+                </mobiscroll.Button>
+              </div>
             </div>
           </Box>
         </Container>

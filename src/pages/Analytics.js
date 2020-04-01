@@ -11,8 +11,8 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Link from "@material-ui/core/Link";
 import Copyright from "../components/Copyright";
-import Chart from "../components/Chart";
-import PieChart from "../components/PieChart";
+import PieChart from "../charts/PieChart";
+import ChargeableChart from "../charts/ChargeableChart";
 
 import WeekSelectorHooks from "../components/WeekSelectorHooks";
 import Timecards from "../components/Timecards";
@@ -94,7 +94,8 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column"
   },
   fixedHeight: {
-    height: 350
+    height: 350,
+    paddingBottom: "40px"
   }
 }));
 
@@ -114,17 +115,14 @@ export default function Analytics() {
         </Typography>
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            {/*
-            <Grid item xs={12} md={4} lg={4}>
-              <Paper className={fixedHeightPaper}>
-               <Chart timecards={timecards} />
-              </Paper>
-            </Grid>
-            */}
-
             <Grid item xs={12} md={4} lg={4}>
               <Paper className={fixedHeightPaper}>
                 <PieChart />
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={4} lg={4}>
+              <Paper className={fixedHeightPaper}>
+                <ChargeableChart />
               </Paper>
             </Grid>
           </Grid>
