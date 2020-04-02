@@ -1,13 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { EntriesContext } from "../EntriesContext";
-import { KeyboardBackspace } from "@material-ui/icons";
-import { Link, Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Box from "@material-ui/core/Box";
-import { IconButton } from "@material-ui/core";
 
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
@@ -111,19 +109,24 @@ export default function DailySummary({ match }) {
   const [total, setTotal] = useState();
   const [open, setOpen] = useState(false);
 
+  console.log(entries);
+
   const history = useHistory();
 
   const localDate = new Date(match.params.date);
 
   let utcDate = utcDateParamFormat(localDate); //coverts back to UTC
-  let formattedDate = utcDateParamFormat(localDate); //coverts back to UTC
+
+  const handleRedirect = () => {
+    history.push(`/form/date=${utcDate}`);
+  };
 
   const sum = entries.reduce(function(tot, record) {
-    return tot + record.hourlyEntry.hours;
+    return tot + record.hours;
   }, 0);
 
   const filter = id => {
-    const filtered = entries.filter(entry => entry.hourlyEntry.id !== id);
+    const filtered = entries.filter(entry => entry.id !== id);
     setEntries(filtered);
   };
 
@@ -134,10 +137,10 @@ export default function DailySummary({ match }) {
   useEffect(() => {
     // Update the document title using the browser API
     fetch(
-      `https://apex.oracle.com/pls/apex/myfusion/bdo/web_hours/?timecard_date=${formattedDate}`
+      `https://apex.oracle.com/pls/apex/myfusion/bdo/summary/?timecard_date=${utcDate}`
     )
       .then(res => res.json())
-      .then(data => setEntries(data));
+      .then(data => setEntries(data.entries));
   }, []);
 
   const handleSubmit = () => {
@@ -171,7 +174,7 @@ export default function DailySummary({ match }) {
           <Box pt={4}>
             <div className="mbsc-btn-group-block">
               <div className="mbsc-btn-group-block">
-                <mobiscroll.Button type="submit" color="primary">
+                <mobiscroll.Button onClick={handleRedirect} color="primary">
                   Add Time
                 </mobiscroll.Button>
               </div>

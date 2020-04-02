@@ -1,7 +1,5 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-
-import { EntriesContext } from "../EntriesContext";
 
 import mobiscroll from "@mobiscroll/react-lite";
 import "@mobiscroll/react-lite/dist/css/mobiscroll.min.css";
@@ -13,8 +11,6 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
 const useStyles = makeStyles(theme => ({

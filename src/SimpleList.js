@@ -28,11 +28,7 @@ export default function SimpleList(props) {
     <div>
       <List className={classes.root}>
         {entries.map(entry => (
-          <ListItemDisplay
-            entry={entry.hourlyEntry}
-            key={entry.hourlyEntry.id}
-            filter={filter}
-          />
+          <ListItemDisplay entry={entry} key={entry.id} filter={filter} />
         ))}
       </List>
     </div>

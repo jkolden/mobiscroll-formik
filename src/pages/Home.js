@@ -9,7 +9,6 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import Link from "@material-ui/core/Link";
 import Copyright from "../components/Copyright";
 import DefaultDate from "../utilities/DefaultDate";
 
@@ -113,7 +112,6 @@ export default function Home() {
     )
       .then(res => res.json())
       .then(data => setTimecards(data.items));
-    console.log(timecards);
   }, [selectedDays]);
 
   const classes = useStyles();

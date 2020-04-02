@@ -1,8 +1,6 @@
-import React, { useState, useContext, useEffect } from "react";
-import { EntriesContext } from "../EntriesContext";
+import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import InputNumber from "rc-input-number";
-import NumPad from "react-numpad";
+
 import { useHistory } from "react-router-dom";
 
 import utcDateParamFormat from "../utilities/utcDateParamFormat";
@@ -15,10 +13,7 @@ import Projects from "../assets/static/Projects";
 import Tasks from "../assets/static/Tasks";
 
 function Form({ match }) {
-  const [entries, setEntries] = useContext(EntriesContext);
   const [hourlyEntry, setHourlyEntry] = useState({ hours: "" });
-
-  console.log("form", entries);
 
   const history = useHistory();
 
@@ -67,8 +62,11 @@ function Form({ match }) {
     fetch("https://apex.oracle.com/pls/apex/myfusion/bdo/web_hours/", {
       method: "POST",
       body: JSON.stringify(myentries)
+    }).then(res => {
+      if (res.status == 200) {
+        history.push(`/dailysummary/${timeCardDate}`);
+      }
     });
-    history.push(`/dailysummary/${timeCardDate}`);
   };
 
   return (

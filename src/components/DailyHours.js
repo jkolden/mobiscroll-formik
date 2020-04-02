@@ -1,11 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { EntriesContext } from "../EntriesContext";
 
-import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import Title from "./Title";
-import DateFormat from "../utilities/DateFormat";
 
 const useStyles = makeStyles({
   depositContext: {
@@ -18,10 +15,8 @@ export default function DailyHours(props) {
   const { total, timeCardDate } = props;
   const classes = useStyles();
 
-  console.log(entries);
-
   const sum = entries.reduce(function(tot, record) {
-    return tot + record.hourlyEntry.hours;
+    return tot + record.hours;
   }, 0);
 
   return (
