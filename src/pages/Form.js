@@ -27,12 +27,11 @@ function Form({ match }) {
 
   const timeCardDate = new Date(match.params.date);
   const paramDate = match.params.date;
-  const utc = new Date.UTC(match.params.date);
 
   const formattedDate = utcDateParamFormat(timeCardDate);
 
   useEffect(() => {
-    localStorage.setItem("utcDate", match.params.date);
+    localStorage.setItem("utcDate", paramDate);
     if (match.params.id) {
       let entry = entries.find(entry => entry.id == match.params.id);
       setHourlyEntry(entry);
@@ -91,7 +90,7 @@ function Form({ match }) {
 
   return (
     <mobiscroll.Page>
-      <h3>{utcDateParamFormat(utc)}</h3>
+      <h3>{JSON.stringify(timeCardDate)}</h3>
       <mobiscroll.Form onSubmit={handleSubmit}>
         <mobiscroll.FormGroup>
           <mobiscroll.FormGroupTitle>
