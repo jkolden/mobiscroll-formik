@@ -50,19 +50,17 @@ export default function CardListDisplay(props) {
           }
         />
         <ListItemSecondaryAction>
-          {timecard.date_submitted === "Not Submitted" && (
-            <Link
-              to={
-                timecard.hours == 0
-                  ? `/form/${timecard.timecard_date}`
-                  : `/dailysummary/${timecard.timecard_date}`
-              }
-            >
-              <IconButton edge="end" aria-label="delete">
-                <ChevronRightIcon />
-              </IconButton>
-            </Link>
-          )}
+          <Link
+            to={
+              timecard.hours == 0
+                ? `/form/${timecard.timecard_date}`
+                : `/dailysummary/${timecard.timecard_date}`
+            }
+          >
+            <IconButton edge="end" aria-label="delete">
+              <ChevronRightIcon />
+            </IconButton>
+          </Link>
         </ListItemSecondaryAction>
       </ListItem>
     </div>

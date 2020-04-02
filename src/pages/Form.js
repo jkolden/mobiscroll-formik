@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { EntriesContext } from "../EntriesContext";
+
 import { v4 as uuidv4 } from "uuid";
 
 import { useHistory } from "react-router-dom";
@@ -13,13 +15,27 @@ import Projects from "../assets/static/Projects";
 import Tasks from "../assets/static/Tasks";
 
 function Form({ match }) {
-  const [hourlyEntry, setHourlyEntry] = useState({ hours: "" });
+  const [entries, setEntries] = useContext(EntriesContext);
+
+  const [hourlyEntry, setHourlyEntry] = useState({
+    hours: "",
+    locality: "Chicago"
+  });
 
   const history = useHistory();
 
   const timeCardDate = new Date(match.params.date);
+  const paramDate = match.params.date;
 
   const formattedDate = utcDateParamFormat(timeCardDate);
+
+  useEffect(() => {
+    localStorage.setItem("utcDate", paramDate);
+    if (match.params.id) {
+      let entry = entries.find(entry => entry.id == match.params.id);
+      setHourlyEntry(entry);
+    }
+  }, []);
 
   const projects = [
     { BDO0001: "BDO Internal Productivity" },
@@ -54,8 +70,10 @@ function Form({ match }) {
 
   const handleSubmit = event => {
     event.preventDefault();
-    hourlyEntry.id = uuidv4();
+    hourlyEntry.id = hourlyEntry.id || uuidv4();
     hourlyEntry.exp_date = formattedDate;
+
+    //setEntries(prevEntries => [...prevEntries, { hourlyEntry }]);
 
     const myentries = [{ hourlyEntry: hourlyEntry }];
 
@@ -64,7 +82,7 @@ function Form({ match }) {
       body: JSON.stringify(myentries)
     }).then(res => {
       if (res.status == 200) {
-        history.push(`/dailysummary/${timeCardDate}`);
+        history.push(`/dailysummary/${localStorage.getItem("utcDate")}`);
       }
     });
   };
@@ -91,6 +109,7 @@ function Form({ match }) {
             ))}
           </mobiscroll.Dropdown>
           <mobiscroll.Dropdown
+            value={hourlyEntry["task"]}
             label="Task"
             name="task"
             onChange={handleChange("task")}
@@ -110,7 +129,7 @@ function Form({ match }) {
           <mobiscroll.Segmented
             name="worktype"
             value="Internal"
-            checked={hourlyEntry["worktype"] === "internal"}
+            checked={hourlyEntry["worktype"] === "Internal"}
             onChange={handleChange("worktype")}
           >
             Internal
@@ -118,7 +137,7 @@ function Form({ match }) {
           <mobiscroll.Segmented
             name="worktype"
             value="External"
-            checked={hourlyEntry["worktype"] === "external"}
+            checked={hourlyEntry["worktype"] === "External"}
             onChange={handleChange("worktype")}
           >
             External

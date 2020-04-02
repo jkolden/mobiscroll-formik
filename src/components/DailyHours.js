@@ -12,7 +12,7 @@ const useStyles = makeStyles({
 
 export default function DailyHours(props) {
   const [entries, setEntries] = useContext(EntriesContext);
-  const { total, timeCardDate } = props;
+  const { total, timeCardDate, apiSubmissionDate } = props;
   const classes = useStyles();
 
   const sum = entries.reduce(function(tot, record) {
@@ -21,15 +21,17 @@ export default function DailyHours(props) {
 
   return (
     <React.Fragment>
-      <Typography variant="h6">Total Hours for this Timecard</Typography>
+      <Typography variant="h6" color="textSecondary">
+        Total Hours for this Timecard
+      </Typography>
       <Typography
         variant="h6"
-        color="textPrimary"
+        color="textSecondary"
         className={classes.depositContext}
       >
         {timeCardDate}
       </Typography>
-      <Typography variant="h4">{sum}</Typography>
+      <Typography variant="h3">{sum}</Typography>
     </React.Fragment>
   );
 }

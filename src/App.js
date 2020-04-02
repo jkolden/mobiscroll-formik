@@ -75,7 +75,7 @@ const App = () => {
 
             <div style={containerStyles}>
               <Route exact path="/" component={Home} />
-              <Route path="/form/:date" component={Form} />
+              <Route path="/form/:date/:id?" component={Form} />
               <Route path="/dailysummary/:date" component={DailySummary} />
               <Route path="/analytics" component={Analytics} />
               <Route path="/settings" component={Settings} />

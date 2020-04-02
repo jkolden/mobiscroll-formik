@@ -108,18 +108,14 @@ export default function DailySummary({ match }) {
   const [entries, setEntries] = useContext(EntriesContext);
   const [total, setTotal] = useState();
   const [open, setOpen] = useState(false);
-
-  console.log(entries);
+  const [data, setData] = useState({});
 
   const history = useHistory();
 
   const localDate = new Date(match.params.date);
+  const paramDate = match.params.date;
 
   let utcDate = utcDateParamFormat(localDate); //coverts back to UTC
-
-  const handleRedirect = () => {
-    history.push(`/form/date=${utcDate}`);
-  };
 
   const sum = entries.reduce(function(tot, record) {
     return tot + record.hours;
@@ -128,23 +124,34 @@ export default function DailySummary({ match }) {
   const filter = id => {
     const filtered = entries.filter(entry => entry.id !== id);
     setEntries(filtered);
+
+    fetch(`https://apex.oracle.com/pls/apex/myfusion/bdo/timerecord/${id}`, {
+      method: "DELETE"
+    });
   };
 
   useEffect(() => {
-    setTotal(sum);
-  }, []);
-
-  useEffect(() => {
+    localStorage.setItem("utcDate", paramDate);
     // Update the document title using the browser API
+
     fetch(
       `https://apex.oracle.com/pls/apex/myfusion/bdo/summary/?timecard_date=${utcDate}`
     )
       .then(res => res.json())
-      .then(data => setEntries(data.entries));
+      .then(data => {
+        setData(data);
+        setEntries(data.entries);
+        setTotal(sum);
+      });
   }, []);
 
   const handleSubmit = () => {
-    console.log("clicked handleSubmit");
+    setOpen(true);
+    console.log(data);
+  };
+
+  const handleRedirect = () => {
+    history.push(`/form/${localStorage.getItem("utcDate")}`);
   };
 
   const classes = useStyles();
@@ -162,27 +169,41 @@ export default function DailySummary({ match }) {
             {/* This Timecard */}
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>
-                <DailyHours total={total} timeCardDate={utcDate} />
+                <DailyHours
+                  total={total}
+                  timeCardDate={utcDate}
+                  apiSubmissionDate={data.api_submission_date}
+                />
               </Paper>
             </Grid>
             <Grid item xs={12} md={4} lg={3}>
               <Paper>
-                <SimpleList setTotal={setTotal} sum={sum} filter={filter} />
+                <SimpleList
+                  setTotal={setTotal}
+                  sum={sum}
+                  filter={filter}
+                  essId={data.ess_id}
+                />
               </Paper>
             </Grid>
           </Grid>
           <Box pt={4}>
             <div className="mbsc-btn-group-block">
               <div className="mbsc-btn-group-block">
-                <mobiscroll.Button onClick={handleRedirect} color="primary">
+                <mobiscroll.Button
+                  onClick={handleRedirect}
+                  color="primary"
+                  disabled={data.ess_id ? true : false}
+                >
                   Add Time
                 </mobiscroll.Button>
               </div>
+
               <mobiscroll.Button
                 type="submit"
                 color="primary"
                 onClick={handleSubmit}
-                disabled={!entries.length}
+                disabled={data.ess_id ? true : false}
               >
                 Submit
               </mobiscroll.Button>

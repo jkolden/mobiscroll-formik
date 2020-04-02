@@ -1,19 +1,16 @@
 import React, { useContext } from "react";
 import { EntriesContext } from "../EntriesContext";
+import { Link } from "react-router-dom";
 
-import mobiscroll from "@mobiscroll/react-lite";
 import "@mobiscroll/react-lite/dist/css/mobiscroll.min.css";
 import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import Divider from "@material-ui/core/Divider";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import CommentIcon from "@material-ui/icons/Comment";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import Chicago from "../assets/images/Chicago.jpg";
 import Denver from "../assets/images/Denver.png";
@@ -36,7 +33,7 @@ const useStyles = makeStyles(theme => ({
 export default function ListItemDisplay(props) {
   const [entries, setEntries] = useContext(EntriesContext);
 
-  const { entry, filter } = props;
+  const { entry, filter, essId } = props;
   const classes = useStyles();
 
   const findProject = pProject => {
@@ -58,9 +55,11 @@ export default function ListItemDisplay(props) {
   return (
     <div>
       <ListItem alignItems="flex-start" divider>
-        <ListItemAvatar>
-          <Avatar alt={entry.locality} src={images[entry.locality]} />
-        </ListItemAvatar>
+        <Link to={`/form/${localStorage.getItem("utcDate")}/${entry.id}`}>
+          <ListItemAvatar>
+            <Avatar alt={entry.locality} src={images[entry.locality]} />
+          </ListItemAvatar>
+        </Link>
         <ListItemText
           primary={`Project: ${findProject(entry.project)}`}
           secondary={
@@ -80,6 +79,7 @@ export default function ListItemDisplay(props) {
         <ListItemSecondaryAction>
           <IconButton
             edge="end"
+            disabled={essId ? true : false}
             aria-label="delete"
             onClick={() => filter(entry.id)}
           >
