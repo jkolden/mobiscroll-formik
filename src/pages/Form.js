@@ -3,8 +3,9 @@ import { EntriesContext } from "../EntriesContext";
 import { v4 as uuidv4 } from "uuid";
 import InputNumber from "rc-input-number";
 import NumPad from "react-numpad";
+import { useHistory } from "react-router-dom";
 
-import DateFormat from "../utilities/DateFormat";
+import utcDateParamFormat from "../utilities/utcDateParamFormat";
 
 /* import mobiscroll */
 import mobiscroll from "@mobiscroll/react-lite";
@@ -17,14 +18,13 @@ function Form({ match }) {
   const [entries, setEntries] = useContext(EntriesContext);
   const [hourlyEntry, setHourlyEntry] = useState({ hours: "" });
 
+  console.log("form", entries);
+
+  const history = useHistory();
+
   const timeCardDate = new Date(match.params.date);
 
-  const formattedDate =
-    parseInt(timeCardDate.getUTCMonth() + 1) +
-    "/" +
-    timeCardDate.getUTCDate() +
-    "/" +
-    timeCardDate.getFullYear();
+  const formattedDate = utcDateParamFormat(timeCardDate);
 
   const projects = [
     { BDO0001: "BDO Internal Productivity" },
@@ -42,17 +42,6 @@ function Form({ match }) {
       }
     ]
   };
-
-  //
-  useEffect(() => {
-    // Update the document title using the browser API
-    fetch(
-      `https://apex.oracle.com/pls/apex/myfusion/bdo/web_hours/?timecard_date=${formattedDate}`
-    )
-      .then(res => res.json())
-      .then(data => setEntries(data));
-    console.log(entries);
-  }, []);
 
   const handleNumberChange = name => event => {
     setHourlyEntry({
@@ -72,10 +61,14 @@ function Form({ match }) {
     event.preventDefault();
     hourlyEntry.id = uuidv4();
     hourlyEntry.exp_date = formattedDate;
-    hourlyEntry.isoDate = new Date(match.params.date); //uses browser date
-    console.log(hourlyEntry);
 
-    setEntries(prevEntries => [...prevEntries, { hourlyEntry }]);
+    const myentries = [{ hourlyEntry: hourlyEntry }];
+
+    fetch("https://apex.oracle.com/pls/apex/myfusion/bdo/web_hours/", {
+      method: "POST",
+      body: JSON.stringify(myentries)
+    });
+    history.push(`/dailysummary/${timeCardDate}`);
   };
 
   return (

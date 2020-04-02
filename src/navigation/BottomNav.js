@@ -28,16 +28,7 @@ function BottomNav({ val, onChange }) {
         label="Home"
         icon={<Home />}
       />
-      <BottomNavigationAction
-        component={Link}
-        to="/dashboard"
-        label="Hours"
-        icon={
-          <Badge badgeContent={entries.length} color="secondary">
-            <List />
-          </Badge>
-        }
-      />
+
       <BottomNavigationAction
         component={Link}
         to="/analytics"

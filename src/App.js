@@ -22,6 +22,7 @@ import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import Settings from "./pages/Settings";
 import Analytics from "./pages/Analytics";
+import DailySummary from "./pages/DailySummary";
 
 import { EntriesProvider } from "./EntriesContext";
 
@@ -45,18 +46,6 @@ const App = () => {
     }
   });
 
-  function renderView() {
-    switch (tab) {
-      case 0:
-        return <Home />;
-      case 1:
-        return <Dashboard />;
-      case 2:
-        return <Settings />;
-      default:
-        return new Error("This page does not exist");
-    }
-  }
   const handleLightMode = () => {
     document.querySelector("body").style.backgroundColor = "#fff";
     setThemeMode("light");
@@ -87,6 +76,7 @@ const App = () => {
             <div style={containerStyles}>
               <Route exact path="/" component={Home} />
               <Route path="/form/:date" component={Form} />
+              <Route path="/dailysummary/:date" component={DailySummary} />
               <Route path="/dashboard" component={Dashboard} />
               <Route path="/analytics" component={Analytics} />
               <Route path="/settings" component={Settings} />

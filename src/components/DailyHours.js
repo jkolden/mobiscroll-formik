@@ -15,7 +15,7 @@ const useStyles = makeStyles({
 
 export default function DailyHours(props) {
   const [entries, setEntries] = useContext(EntriesContext);
-  const { total } = props;
+  const { total, timeCardDate } = props;
   const classes = useStyles();
 
   console.log(entries);
@@ -32,8 +32,7 @@ export default function DailyHours(props) {
         color="textPrimary"
         className={classes.depositContext}
       >
-        {entries.length > 0 &&
-          DateFormat(new Date(entries[0]["hourlyEntry"].exp_date))}
+        {timeCardDate}
       </Typography>
       <Typography variant="h4">{sum}</Typography>
     </React.Fragment>
