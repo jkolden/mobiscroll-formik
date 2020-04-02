@@ -19,6 +19,8 @@ import Grand from "../assets/images/GrandRapids.gif";
 import Projects from "../assets/static/Projects";
 import Tasks from "../assets/static/Tasks";
 
+import { deepOrange, deepPurple } from "@material-ui/core/colors";
+
 const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
@@ -27,6 +29,10 @@ const useStyles = makeStyles(theme => ({
   },
   inline: {
     display: "inline"
+  },
+  orange: {
+    color: theme.palette.getContrastText(deepOrange[500]),
+    backgroundColor: deepOrange[500]
   }
 }));
 

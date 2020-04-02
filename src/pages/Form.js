@@ -182,7 +182,7 @@ function Form({ match }) {
             inputMode="decimal"
             min={0.0}
             max={12}
-            step={0.5}
+            step={0.25}
             value={hourlyEntry["hours"]}
             onChange={handleNumberChange("hours")}
           />

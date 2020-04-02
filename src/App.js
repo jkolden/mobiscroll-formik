@@ -42,7 +42,7 @@ const App = () => {
     palette: {
       type: themeMode,
       primary: {
-        main: themeMode === "light" ? "#4791db" : "#111"
+        main: themeMode === "light" ? "#323232" : "#111"
       }
     }
   });
@@ -51,7 +51,8 @@ const App = () => {
     document.querySelector("body").style.backgroundColor = "#fff";
     setThemeMode("light");
     mobiscroll.settings = {
-      theme: "material"
+      theme: "ios",
+      themeVariant: "light"
     };
   };
 
@@ -59,7 +60,8 @@ const App = () => {
     document.querySelector("body").style.backgroundColor = "#111";
     setThemeMode("dark");
     mobiscroll.settings = {
-      theme: "material-dark"
+      theme: "ios",
+      themeVariant: "dark"
     };
   };
 
@@ -79,6 +81,8 @@ const App = () => {
                 render={({ location }) => (
                   <TransitionGroup>
                     <CSSTransition
+                      mountOnEnter={false}
+                      unmountOnExit={true}
                       timeout={3500}
                       classNames="fade"
                       key={location.key}
