@@ -6,7 +6,9 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import mobiscroll from "@mobiscroll/react-lite";
+import "./App.css";
 
 import { Grid, CssBaseline, ThemeProvider } from "@material-ui/core";
 
@@ -18,7 +20,6 @@ import { createBrowserHistory } from "history";
 // pages for this product
 import Form from "./pages/Form";
 import BottomNav from "./navigation/BottomNav";
-import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import Settings from "./pages/Settings";
 import Analytics from "./pages/Analytics";
@@ -74,11 +75,28 @@ const App = () => {
             />
 
             <div style={containerStyles}>
-              <Route exact path="/" component={Home} />
-              <Route path="/form/:date/:id?" component={Form} />
-              <Route path="/dailysummary/:date" component={DailySummary} />
-              <Route path="/analytics" component={Analytics} />
-              <Route path="/settings" component={Settings} />
+              <Route
+                render={({ location }) => (
+                  <TransitionGroup>
+                    <CSSTransition
+                      timeout={3500}
+                      classNames="fade"
+                      key={location.key}
+                    >
+                      <Switch location={location}>
+                        <Route exact path="/" component={Home} />
+                        <Route path="/form/:date/:id?" component={Form} />
+                        <Route
+                          path="/dailysummary/:date"
+                          component={DailySummary}
+                        />
+                        <Route path="/analytics" component={Analytics} />
+                        <Route path="/settings" component={Settings} />
+                      </Switch>
+                    </CSSTransition>
+                  </TransitionGroup>
+                )}
+              />
             </div>
             <BottomNav value={tab} onChange={setTab} />
           </Grid>
