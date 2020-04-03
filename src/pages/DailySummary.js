@@ -6,6 +6,7 @@ import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Box from "@material-ui/core/Box";
+import { Button, ButtonGroup } from "@material-ui/core";
 
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
@@ -16,19 +17,23 @@ import SnackBar from "../components/SnackBar";
 
 import utcDateParamFormat from "../utilities/utcDateParamFormat";
 
-/* import mobiscroll */
-import mobiscroll from "@mobiscroll/react-lite";
-import "@mobiscroll/react-lite/dist/css/mobiscroll.min.css";
-
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: "flex",
-    position: "absolute"
+    "& > *": {
+      margin: theme.spacing(1)
+    }
   },
   float: {
     float: "left"
+  },
+  buttonContainer: {
+    display: "flex"
+  },
+  buttons: {
+    width: "100%",
+    margin: ".5em"
   },
   toolbar: {
     paddingRight: 24 // keep right padding when drawer closed
@@ -189,25 +194,26 @@ export default function DailySummary({ match }) {
             </Grid>
           </Grid>
           <Box pt={4}>
-            <div className="mbsc-btn-group-block">
-              <div className="mbsc-btn-group-block">
-                <mobiscroll.Button
-                  onClick={handleRedirect}
-                  color="primary"
-                  disabled={data.ess_id ? true : false}
-                >
-                  Add Time
-                </mobiscroll.Button>
-              </div>
+            <div className={classes.buttonContainer}>
+              <Button
+                className={classes.buttons}
+                variant="contained"
+                onClick={handleRedirect}
+                disabled={data.ess_id ? true : false}
+              >
+                Add Time
+              </Button>
 
-              <mobiscroll.Button
-                type="submit"
+              <Button
+                className={classes.buttons}
                 color="primary"
+                variant="contained"
+                type="submit"
                 onClick={handleSubmit}
                 disabled={data.ess_id ? true : false}
               >
                 Submit
-              </mobiscroll.Button>
+              </Button>
             </div>
           </Box>
         </Container>

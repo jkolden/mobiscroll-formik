@@ -42,7 +42,7 @@ const App = () => {
     palette: {
       type: themeMode,
       primary: {
-        main: themeMode === "light" ? "#323232" : "#111"
+        main: themeMode === "light" ? "#2196f3" : "#111"
       }
     }
   });

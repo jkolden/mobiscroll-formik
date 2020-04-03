@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { EntriesContext } from "../EntriesContext";
 
+import { makeStyles } from "@material-ui/core/styles";
+
 import { v4 as uuidv4 } from "uuid";
 
 import { useHistory } from "react-router-dom";
@@ -14,8 +16,18 @@ import "@mobiscroll/react-lite/dist/css/mobiscroll.min.css";
 import Projects from "../assets/static/Projects";
 import Tasks from "../assets/static/Tasks";
 
+const useStyles = makeStyles(theme => ({
+  button: {
+    margin: theme.spacing(1)
+  },
+  input: {
+    display: "none"
+  }
+}));
+
 function Form({ match }) {
   const [entries, setEntries] = useContext(EntriesContext);
+  const classes = useStyles();
 
   const [hourlyEntry, setHourlyEntry] = useState({
     hours: "",
@@ -24,6 +36,7 @@ function Form({ match }) {
   });
 
   const history = useHistory();
+  console.log(history);
 
   const timeCardDate = new Date(match.params.date);
   const paramDate = match.params.date;
@@ -37,6 +50,10 @@ function Form({ match }) {
       setHourlyEntry(entry);
     }
   }, []);
+
+  const handleCancel = () => {
+    history.goBack();
+  };
 
   const projects = [
     { BDO0001: "BDO Internal Productivity" },
@@ -90,14 +107,14 @@ function Form({ match }) {
 
   return (
     <mobiscroll.Page>
-      <h3>{JSON.stringify(timeCardDate)}</h3>
+      <h3>{formattedDate}</h3>
       <mobiscroll.Form onSubmit={handleSubmit}>
         <mobiscroll.FormGroup>
           <mobiscroll.FormGroupTitle>
             Project Selection
           </mobiscroll.FormGroupTitle>
           <mobiscroll.Dropdown
-            value={hourlyEntry["project"]}
+            value={hourlyEntry["project"] || ""}
             label="Project"
             name="project"
             onChange={handleChange("project")}
@@ -110,7 +127,7 @@ function Form({ match }) {
             ))}
           </mobiscroll.Dropdown>
           <mobiscroll.Dropdown
-            value={hourlyEntry["task"]}
+            value={hourlyEntry["task"] || ""}
             label="Task"
             name="task"
             onChange={handleChange("task")}
@@ -150,7 +167,7 @@ function Form({ match }) {
           <mobiscroll.Radio
             name="group"
             value="Chicago"
-            defaultChecked
+            checked={hourlyEntry["locality"] === "Chicago"}
             onChange={handleChange("locality")}
           >
             Chicago
@@ -159,6 +176,7 @@ function Form({ match }) {
             name="group"
             value="Denver"
             onChange={handleChange("locality")}
+            checked={hourlyEntry["locality"] === "Denver"}
           >
             Denver
           </mobiscroll.Radio>
@@ -166,6 +184,7 @@ function Form({ match }) {
             name="group"
             value="Grand Rapids"
             onChange={handleChange("locality")}
+            checked={hourlyEntry["locality"] === "Grand Rapids"}
           >
             Grand Rapids
           </mobiscroll.Radio>
@@ -188,7 +207,8 @@ function Form({ match }) {
           />
         </div>
 
-        <div className="mbsc-btn-group-block">
+        <div className="mbsc-btn-group-justified">
+          <mobiscroll.Button onClick={handleCancel}>Cancel</mobiscroll.Button>
           <mobiscroll.Button type="submit">Save</mobiscroll.Button>
         </div>
       </mobiscroll.Form>
