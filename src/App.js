@@ -83,7 +83,7 @@ const App = () => {
                     <CSSTransition
                       mountOnEnter={false}
                       unmountOnExit={true}
-                      timeout={3500}
+                      timeout={1000}
                       classNames="fade"
                       key={location.key}
                     >
