@@ -29,7 +29,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Form({ match }) {
-  const [valid, setValid] = useState(true);
+  const [projectValid, setProjectValid] = useState(true);
+  const [taskValid, setTaskValid] = useState(true);
+
   const [entries, setEntries] = useContext(EntriesContext);
   const classes = useStyles();
 
@@ -40,7 +42,6 @@ function Form({ match }) {
   });
 
   const history = useHistory();
-  console.log(history);
 
   const timeCardDate = new Date(match.params.date);
   const paramDate = match.params.date;
@@ -59,23 +60,6 @@ function Form({ match }) {
     history.goBack();
   };
 
-  const projects = [
-    { BDO0001: "BDO Internal Productivity" },
-    { DS00009: "BDO Dixon Industries" },
-    { PCS10045: "BDO Milestone Billing Project" }
-  ];
-
-  const mytasks = {
-    DS00009: [{ "1.0": "Pre-Implementation" }, { "2.1": "Project Plan" }],
-    PCS10045: [
-      { "1.0": "Documentation" },
-      { "2.1": "On-Line Training Videos" },
-      {
-        "2.2": "Custom Help Screens"
-      }
-    ]
-  };
-
   const handleNumberChange = name => event => {
     setHourlyEntry({
       ...hourlyEntry,
@@ -88,13 +72,27 @@ function Form({ match }) {
       ...hourlyEntry,
       [name]: event.target.value
     });
+
+    if (name === "project" && event.target.value) {
+      setProjectValid(true);
+    }
+
+    if (name === "task" && event.target.value) {
+      setTaskValid(true);
+    }
   };
 
   const handleSubmit = event => {
     if (!hourlyEntry["project"]) {
-      setValid(false);
+      event.preventDefault();
+      setProjectValid(false);
+      return;
+    } else if (!hourlyEntry["task"]) {
+      event.preventDefault();
+      setTaskValid(false);
       return;
     }
+
     event.preventDefault();
     hourlyEntry.id = hourlyEntry.id || uuidv4();
     hourlyEntry.exp_date = formattedDate;
@@ -122,12 +120,12 @@ function Form({ match }) {
           <ProjectSelect
             hourlyEntry={hourlyEntry}
             handleChange={handleChange}
-            valid={valid}
+            valid={projectValid}
           />
           <TaskSelect
             hourlyEntry={hourlyEntry}
             handleChange={handleChange}
-            valid={valid}
+            valid={taskValid}
           />
         </mobiscroll.FormGroup>
 

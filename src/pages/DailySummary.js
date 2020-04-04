@@ -177,53 +177,54 @@ export default function DailySummary({ match }) {
           {loading === true ? (
             <Spinner />
           ) : (
-            <Grid container spacing={3}>
-              {/* This Timecard */}
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper className={fixedHeightPaper}>
-                  <DailyHours
-                    total={total}
-                    timeCardDate={utcDate}
-                    apiSubmissionDate={data.api_submission_date}
-                  />
-                </Paper>
+            <React.Fragment>
+              <Grid container spacing={3}>
+                {/* This Timecard */}
+                <Grid item xs={12} md={4} lg={3}>
+                  <Paper className={fixedHeightPaper}>
+                    <DailyHours
+                      total={total}
+                      timeCardDate={utcDate}
+                      apiSubmissionDate={data.api_submission_date}
+                    />
+                  </Paper>
+                </Grid>
+                <Grid item xs={12} md={4} lg={3}>
+                  <Paper>
+                    <SimpleList
+                      setTotal={setTotal}
+                      sum={sum}
+                      filter={filter}
+                      essId={data.ess_id}
+                    />
+                  </Paper>
+                </Grid>
               </Grid>
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper>
-                  <SimpleList
-                    setTotal={setTotal}
-                    sum={sum}
-                    filter={filter}
-                    essId={data.ess_id}
-                  />
-                </Paper>
-              </Grid>
-            </Grid>
+              <Box pt={4}>
+                <div className={classes.buttonContainer}>
+                  <Button
+                    className={classes.buttons}
+                    variant="contained"
+                    onClick={handleRedirect}
+                    disabled={data.ess_id ? true : false}
+                  >
+                    Add Time
+                  </Button>
+
+                  <Button
+                    className={classes.buttons}
+                    color="primary"
+                    variant="contained"
+                    type="submit"
+                    onClick={handleSubmit}
+                    disabled={data.ess_id ? true : false}
+                  >
+                    Submit
+                  </Button>
+                </div>
+              </Box>
+            </React.Fragment>
           )}
-
-          <Box pt={4}>
-            <div className={classes.buttonContainer}>
-              <Button
-                className={classes.buttons}
-                variant="contained"
-                onClick={handleRedirect}
-                disabled={data.ess_id ? true : false}
-              >
-                Add Time
-              </Button>
-
-              <Button
-                className={classes.buttons}
-                color="primary"
-                variant="contained"
-                type="submit"
-                onClick={handleSubmit}
-                disabled={data.ess_id ? true : false}
-              >
-                Submit
-              </Button>
-            </div>
-          </Box>
         </Container>
       </main>
       <SnackBar open={open} setOpen={setOpen} />

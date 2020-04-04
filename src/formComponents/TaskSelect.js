@@ -9,7 +9,7 @@ export default function TaskSelect({ hourlyEntry, handleChange, valid }) {
   return (
     <mobiscroll.Dropdown
       valid={valid}
-      errorMessage="Task is required"
+      errorMessage="Task selection is required"
       value={hourlyEntry["task"]}
       label="Task"
       name="task"
