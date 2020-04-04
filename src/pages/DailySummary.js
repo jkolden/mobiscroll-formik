@@ -14,6 +14,7 @@ import Paper from "@material-ui/core/Paper";
 import DailyHours from "../components/DailyHours";
 import SimpleList from "../SimpleList";
 import SnackBar from "../components/SnackBar";
+import Spinner from "../hooks/Spinner";
 
 import utcDateParamFormat from "../utilities/utcDateParamFormat";
 
@@ -115,6 +116,7 @@ export default function DailySummary({ match }) {
   const [total, setTotal] = useState();
   const [open, setOpen] = useState(false);
   const [data, setData] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const history = useHistory();
 
@@ -138,7 +140,7 @@ export default function DailySummary({ match }) {
 
   useEffect(() => {
     localStorage.setItem("utcDate", paramDate);
-    // Update the document title using the browser API
+    setLoading(true);
 
     fetch(
       `https://apex.oracle.com/pls/apex/myfusion/bdo/summary/?timecard_date=${utcDate}`
@@ -148,6 +150,7 @@ export default function DailySummary({ match }) {
         setData(data);
         setEntries(data.entries);
         setTotal(sum);
+        setLoading(false);
       });
   }, []);
 
@@ -171,28 +174,33 @@ export default function DailySummary({ match }) {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
-            {/* This Timecard */}
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper className={fixedHeightPaper}>
-                <DailyHours
-                  total={total}
-                  timeCardDate={utcDate}
-                  apiSubmissionDate={data.api_submission_date}
-                />
-              </Paper>
+          {loading === true ? (
+            <Spinner />
+          ) : (
+            <Grid container spacing={3}>
+              {/* This Timecard */}
+              <Grid item xs={12} md={4} lg={3}>
+                <Paper className={fixedHeightPaper}>
+                  <DailyHours
+                    total={total}
+                    timeCardDate={utcDate}
+                    apiSubmissionDate={data.api_submission_date}
+                  />
+                </Paper>
+              </Grid>
+              <Grid item xs={12} md={4} lg={3}>
+                <Paper>
+                  <SimpleList
+                    setTotal={setTotal}
+                    sum={sum}
+                    filter={filter}
+                    essId={data.ess_id}
+                  />
+                </Paper>
+              </Grid>
             </Grid>
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper>
-                <SimpleList
-                  setTotal={setTotal}
-                  sum={sum}
-                  filter={filter}
-                  essId={data.ess_id}
-                />
-              </Paper>
-            </Grid>
-          </Grid>
+          )}
+
           <Box pt={4}>
             <div className={classes.buttonContainer}>
               <Button

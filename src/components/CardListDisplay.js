@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { deepOrange, deepPurple, indigo, red } from "@material-ui/core/colors";
+import { deepOrange, deepPurple, red, green } from "@material-ui/core/colors";
 
 import mobiscroll from "@mobiscroll/react-lite";
 import "@mobiscroll/react-lite/dist/css/mobiscroll.min.css";
@@ -23,23 +23,28 @@ const useStyles = makeStyles(theme => ({
   inline: {
     display: "inline"
   },
-  orange: {
-    color: theme.palette.getContrastText(deepOrange[500]),
-    backgroundColor: deepOrange[500]
-  },
-  purple: {
-    color: theme.palette.getContrastText(deepPurple[500]),
-    backgroundColor: deepPurple[500]
-  },
   red: {
     color: theme.palette.getContrastText(red[500]),
     backgroundColor: red[500]
+  },
+  green: {
+    color: theme.palette.getContrastText(green[300]),
+    backgroundColor: green[300]
   }
 }));
 
 export default function CardListDisplay(props) {
   const { timecard } = props;
   const classes = useStyles();
+
+  const colors = {
+    S: "",
+    M: classes.red,
+    T: classes.red,
+    W: classes.red,
+    T: classes.red,
+    F: classes.red
+  };
 
   return (
     <div>
@@ -49,7 +54,9 @@ export default function CardListDisplay(props) {
             alt={timecard.card_title}
             src="/static/images/avatar/1.jpg"
             className={
-              timecard.card_title.substr(0, 1) != "S" ? classes.red : ""
+              timecard.api_status == 200
+                ? classes.green
+                : colors[timecard.card_title.substr(0, 1)]
             }
           />
         </ListItemAvatar>

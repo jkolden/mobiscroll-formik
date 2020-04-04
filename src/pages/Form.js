@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import { EntriesContext } from "../EntriesContext";
+import ProjectSelect from "../formComponents/ProjectSelect";
+import TaskSelect from "../formComponents/TaskSelect";
+import LocalitySelect from "../formComponents/LocalitySelect";
+import WorkTypeSelect from "../formComponents/WorkTypeSelect";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -13,7 +17,6 @@ import utcDateParamFormat from "../utilities/utcDateParamFormat";
 import mobiscroll from "@mobiscroll/react-lite";
 import "@mobiscroll/react-lite/dist/css/mobiscroll.min.css";
 
-import Projects from "../assets/static/Projects";
 import Tasks from "../assets/static/Tasks";
 
 const useStyles = makeStyles(theme => ({
@@ -26,6 +29,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Form({ match }) {
+  const [valid, setValid] = useState(true);
   const [entries, setEntries] = useContext(EntriesContext);
   const classes = useStyles();
 
@@ -87,11 +91,13 @@ function Form({ match }) {
   };
 
   const handleSubmit = event => {
+    if (!hourlyEntry["project"]) {
+      setValid(false);
+      return;
+    }
     event.preventDefault();
     hourlyEntry.id = hourlyEntry.id || uuidv4();
     hourlyEntry.exp_date = formattedDate;
-
-    //setEntries(prevEntries => [...prevEntries, { hourlyEntry }]);
 
     const myentries = [{ hourlyEntry: hourlyEntry }];
 
@@ -113,81 +119,30 @@ function Form({ match }) {
           <mobiscroll.FormGroupTitle>
             Project Selection
           </mobiscroll.FormGroupTitle>
-          <mobiscroll.Dropdown
-            value={hourlyEntry["project"] || ""}
-            label="Project"
-            name="project"
-            onChange={handleChange("project")}
-          >
-            <option>Select</option>
-            {Projects.map(project => (
-              <option key={Object.keys(project)} value={Object.keys(project)}>
-                {`${Object.values(project)}`}
-              </option>
-            ))}
-          </mobiscroll.Dropdown>
-          <mobiscroll.Dropdown
-            value={hourlyEntry["task"] || ""}
-            label="Task"
-            name="task"
-            onChange={handleChange("task")}
-          >
-            <option>Select</option>
-            {hourlyEntry["project"] &&
-              Tasks[hourlyEntry["project"]].map(obj => (
-                <option key={Object.keys(obj)} value={Object.keys(obj)}>
-                  {`${Object.values(obj)}`}
-                </option>
-              ))}
-          </mobiscroll.Dropdown>
+          <ProjectSelect
+            hourlyEntry={hourlyEntry}
+            handleChange={handleChange}
+            valid={valid}
+          />
+          <TaskSelect
+            hourlyEntry={hourlyEntry}
+            handleChange={handleChange}
+            valid={valid}
+          />
         </mobiscroll.FormGroup>
 
         <div className="mbsc-form-group">
-          <div className="mbsc-form-group-title">Work Type</div>
-          <mobiscroll.Segmented
-            name="worktype"
-            value="Internal"
-            checked={hourlyEntry["worktype"] === "Internal"}
-            onChange={handleChange("worktype")}
-          >
-            Internal
-          </mobiscroll.Segmented>
-          <mobiscroll.Segmented
-            name="worktype"
-            value="External"
-            checked={hourlyEntry["worktype"] === "External"}
-            onChange={handleChange("worktype")}
-          >
-            External
-          </mobiscroll.Segmented>
+          <WorkTypeSelect
+            hourlyEntry={hourlyEntry}
+            handleChange={handleChange}
+          />
         </div>
 
         <div className="mbsc-form-group">
-          <div className="mbsc-form-group-title">Locality</div>
-          <mobiscroll.Radio
-            name="group"
-            value="Chicago"
-            checked={hourlyEntry["locality"] === "Chicago"}
-            onChange={handleChange("locality")}
-          >
-            Chicago
-          </mobiscroll.Radio>
-          <mobiscroll.Radio
-            name="group"
-            value="Denver"
-            onChange={handleChange("locality")}
-            checked={hourlyEntry["locality"] === "Denver"}
-          >
-            Denver
-          </mobiscroll.Radio>
-          <mobiscroll.Radio
-            name="group"
-            value="Grand Rapids"
-            onChange={handleChange("locality")}
-            checked={hourlyEntry["locality"] === "Grand Rapids"}
-          >
-            Grand Rapids
-          </mobiscroll.Radio>
+          <LocalitySelect
+            hourlyEntry={hourlyEntry}
+            handleChange={handleChange}
+          />
         </div>
 
         <div>
