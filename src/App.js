@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   withRouter,
   BrowserRouter as Router,
@@ -34,7 +34,7 @@ const containerStyles = {
 };
 
 const App = () => {
-  const [themeMode, setThemeMode] = useState("light");
+  const [themeMode, setThemeMode] = useState("dark");
   const [tab, setTab] = useState(0);
   let hist = createBrowserHistory();
 
@@ -47,9 +47,18 @@ const App = () => {
     }
   });
 
+  useEffect(() => {
+    if (localStorage.getItem("theme")) {
+      let themePreference = localStorage.getItem("theme");
+      setThemeMode(themePreference);
+    }
+  }, []);
+
   const handleLightMode = () => {
     document.querySelector("body").style.backgroundColor = "#fff";
     setThemeMode("light");
+    localStorage.setItem("theme", "light");
+
     mobiscroll.settings = {
       theme: "ios",
       themeVariant: "light"
@@ -59,6 +68,7 @@ const App = () => {
   const handleDarkMode = () => {
     document.querySelector("body").style.backgroundColor = "#111";
     setThemeMode("dark");
+    localStorage.setItem("theme", "dark");
     mobiscroll.settings = {
       theme: "ios",
       themeVariant: "dark"
