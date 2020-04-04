@@ -50,7 +50,13 @@ const App = () => {
   useEffect(() => {
     if (localStorage.getItem("theme")) {
       let themePreference = localStorage.getItem("theme");
+      //material ui theme
       setThemeMode(themePreference);
+      //mobiscroll theme
+      mobiscroll.settings = {
+        theme: "ios",
+        themeVariant: themePreference
+      };
     }
   }, []);
 
