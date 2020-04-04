@@ -61,11 +61,18 @@ export default function ListItemDisplay(props) {
   return (
     <div>
       <ListItem alignItems="flex-start" divider>
-        <Link to={`/form/${localStorage.getItem("utcDate")}/${entry.id}`}>
+        {!essId ? (
+          <Link to={`/form/${localStorage.getItem("utcDate")}/${entry.id}`}>
+            <ListItemAvatar>
+              <Avatar alt={entry.locality} src={images[entry.locality]} />
+            </ListItemAvatar>
+          </Link>
+        ) : (
           <ListItemAvatar>
             <Avatar alt={entry.locality} src={images[entry.locality]} />
           </ListItemAvatar>
-        </Link>
+        )}
+
         <ListItemText
           primary={`Project: ${findProject(entry.project)}`}
           secondary={
