@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { EntriesContext } from "../EntriesContext";
 import { useHistory } from "react-router-dom";
+import swal from "sweetalert";
 
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
@@ -13,7 +14,6 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import DailyHours from "../components/DailyHours";
 import SimpleList from "../SimpleList";
-import SnackBar from "../components/SnackBar";
 import Spinner from "../hooks/Spinner";
 
 import utcDateParamFormat from "../utilities/utcDateParamFormat";
@@ -114,7 +114,6 @@ const useStyles = makeStyles(theme => ({
 export default function DailySummary({ match }) {
   const [entries, setEntries] = useContext(EntriesContext);
   const [total, setTotal] = useState();
-  const [open, setOpen] = useState(false);
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -155,12 +154,36 @@ export default function DailySummary({ match }) {
   }, []);
 
   const handleSubmit = () => {
-    setOpen(true);
-    console.log(data);
+    fetch("https://apex.oracle.com/pls/apex/myfusion/bdo/timecard_submit/", {
+      method: "POST",
+      body: JSON.stringify({ timecard_date: utcDate })
+    }).then(res => console.log(res));
   };
 
   const handleRedirect = () => {
     history.push(`/form/${localStorage.getItem("utcDate")}`);
+  };
+
+  const sweetAlert = () => {
+    swal({
+      title: "Ready to submit this timecard?",
+      text: "This will send your timecard to Oracle Cloud Projects",
+      icon: "info",
+      buttons: ["Cancel", "Submit"],
+      dangerMode: false
+    }).then(submitted => {
+      if (submitted) {
+        handleSubmit();
+        swal("Thank you, your timecard has been submitted!", {
+          icon: "success"
+        });
+        history.push("/");
+      } else {
+        swal("OK, you can keep working on this timecard", {
+          icon: "info"
+        });
+      }
+    });
   };
 
   const classes = useStyles();
@@ -216,7 +239,7 @@ export default function DailySummary({ match }) {
                     color="primary"
                     variant="contained"
                     type="submit"
-                    onClick={handleSubmit}
+                    onClick={sweetAlert}
                     disabled={data.ess_id ? true : false}
                   >
                     Submit
@@ -227,7 +250,6 @@ export default function DailySummary({ match }) {
           )}
         </Container>
       </main>
-      <SnackBar open={open} setOpen={setOpen} />
     </div>
   );
 }

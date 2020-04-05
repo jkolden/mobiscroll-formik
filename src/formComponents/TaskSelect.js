@@ -14,8 +14,9 @@ export default function TaskSelect({ hourlyEntry, handleChange, valid }) {
       label="Task"
       name="task"
       onChange={handleChange("task")}
+      defaultValue=""
     >
-      <option disabled selected value>
+      <option disabled value="">
         Select
       </option>
       {hourlyEntry["project"] &&

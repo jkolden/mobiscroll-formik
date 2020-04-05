@@ -48,8 +48,8 @@ const App = () => {
   });
 
   useEffect(() => {
-    if (localStorage.getItem("theme")) {
-      let themePreference = localStorage.getItem("theme");
+    let themePreference = localStorage.getItem("theme");
+    if (themePreference) {
       //material ui theme
       setThemeMode(themePreference);
       //mobiscroll theme

@@ -32,6 +32,7 @@ const WeekSelectorHooks = props => {
   const [hoverRange, setHoverRange] = useState([]);
 
   const handleDayChange = date => {
+    localStorage.setItem("BDOStartDate", date);
     setSelectedDays(getWeekDays(getWeekRange(date).from));
   };
 
@@ -72,6 +73,7 @@ const WeekSelectorHooks = props => {
         onDayMouseEnter={handleDayEnter}
         onDayMouseLeave={handleDayLeave}
         onWeekClick={handleWeekClick}
+        initialMonth={selectedDays[0]}
       />
       {selectedDays.length === 7 && (
         <div>

@@ -14,8 +14,9 @@ export default function ProjectSelect({ hourlyEntry, handleChange, valid }) {
       label="Project"
       name="project"
       onChange={handleChange("project")}
+      defaultValue=""
     >
-      <option disabled selected value>
+      <option disabled value="">
         Select
       </option>
       {Projects.map(project => (

@@ -74,6 +74,7 @@ function Form({ match }) {
     });
 
     if (name === "project" && event.target.value) {
+      //TODO: reset task to force select of valid value
       setProjectValid(true);
     }
 
@@ -83,6 +84,7 @@ function Form({ match }) {
   };
 
   const handleSubmit = event => {
+    //check that user entered values for project and task
     if (!hourlyEntry["project"]) {
       event.preventDefault();
       setProjectValid(false);

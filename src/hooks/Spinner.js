@@ -5,7 +5,6 @@ import ClipLoader from "react-spinners/ClipLoader";
 
 export default function Spinner() {
   const theme = useTheme();
-  console.log("theme", theme.palette);
   const override = css`
     display: block;
     margin: 0 auto;

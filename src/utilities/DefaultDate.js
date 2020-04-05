@@ -24,10 +24,16 @@ function getWeekRange(date) {
 }
 
 const DefaultDate = () => {
-  let start = new Date(
-    "Sun Mar 29 2020 00:00:00 GMT-0700 (Pacific Daylight Time)"
-  );
-  return getWeekDays(getWeekRange(start).from);
+  let BDOStartDate = localStorage.getItem("BDOStartDate");
+
+  if (BDOStartDate) {
+    return getWeekDays(getWeekRange(BDOStartDate).from);
+  } else {
+    BDOStartDate = new Date(
+      "Sun Apr 05 2020 00:00:00 GMT-0700 (Pacific Daylight Time)"
+    );
+    return getWeekDays(getWeekRange(BDOStartDate).from);
+  }
 };
 
 export default DefaultDate;
