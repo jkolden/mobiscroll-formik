@@ -21,19 +21,19 @@ import Tasks from "../assets/static/Tasks";
 
 import { deepOrange, deepPurple } from "@material-ui/core/colors";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     maxWidth: "auto",
-    backgroundColor: theme.palette.background.paper
+    backgroundColor: theme.palette.background.paper,
   },
   inline: {
-    display: "inline"
+    display: "inline",
   },
   orange: {
     color: theme.palette.getContrastText(deepOrange[500]),
-    backgroundColor: deepOrange[500]
-  }
+    backgroundColor: deepOrange[500],
+  },
 }));
 
 export default function ListItemDisplay(props) {
@@ -42,20 +42,20 @@ export default function ListItemDisplay(props) {
   const { entry, filter, essId } = props;
   const classes = useStyles();
 
-  const findProject = pProject => {
-    let obj = Projects.find(o => Object.keys(o) == pProject);
+  const findProject = (pProject) => {
+    let obj = Projects.find((o) => Object.keys(o) == pProject);
     return Object.values(obj);
   };
 
   const findTask = (pProject, pTask) => {
-    let obj = Tasks[pProject].find(o => Object.keys(o) == pTask);
+    let obj = Tasks[pProject].find((o) => Object.keys(o) == pTask);
     return Object.values(obj);
   };
 
   const images = {
     Chicago: Chicago,
     Denver: Denver,
-    "Grand Rapids": Grand
+    "Grand Rapids": Grand,
   };
 
   return (

@@ -7,15 +7,15 @@ import List from "@material-ui/core/List";
 
 import ListItemDisplay from "./components/ListItemDisplay";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     maxWidth: "auto",
-    backgroundColor: theme.palette.background.paper
+    backgroundColor: theme.palette.background.paper,
   },
   inline: {
-    display: "inline"
-  }
+    display: "inline",
+  },
 }));
 
 export default function SimpleList(props) {
@@ -27,7 +27,7 @@ export default function SimpleList(props) {
   return (
     <div>
       <List className={classes.root}>
-        {entries.map(entry => (
+        {entries.map((entry) => (
           <ListItemDisplay
             entry={entry}
             key={entry.id}

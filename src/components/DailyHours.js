@@ -6,8 +6,8 @@ import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles({
   depositContext: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 
 export default function DailyHours(props) {
@@ -15,7 +15,7 @@ export default function DailyHours(props) {
   const { total, timeCardDate, apiSubmissionDate } = props;
   const classes = useStyles();
 
-  const sum = entries.reduce(function(tot, record) {
+  const sum = entries.reduce(function (tot, record) {
     return tot + record.hours;
   }, 0);
 
