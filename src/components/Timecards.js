@@ -9,29 +9,29 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import DateFormat from "../utilities/DateFormat";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     maxWidth: "auto",
-    backgroundColor: theme.palette.background.paper
+    backgroundColor: theme.palette.background.paper,
   },
   inline: {
-    display: "inline"
+    display: "inline",
   },
   container: {
     paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4)
+    paddingBottom: theme.spacing(4),
   },
   paper: {
     padding: theme.spacing(2),
     display: "flex",
     overflow: "auto",
     flexDirection: "column",
-    width: "100%"
-  }
+    width: "100%",
+  },
 }));
 
-const Timecards = props => {
+const Timecards = (props) => {
   const { timecards, startdate } = props;
   let displayDate = new Date(startdate);
 
@@ -44,7 +44,7 @@ const Timecards = props => {
           <List className={classes.root}>
             <h2>Timecards for Week:</h2>
             <h3>{DateFormat(displayDate)}</h3>
-            {timecards.map(timecard => (
+            {timecards.map((timecard) => (
               <CardListDisplay key={timecard.card_title} timecard={timecard} />
             ))}
           </List>

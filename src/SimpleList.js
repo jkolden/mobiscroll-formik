@@ -20,14 +20,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SimpleList(props) {
   const { setTotal, sum, filter, essId } = props;
-  const [entries, setEntries] = useContext(EntriesContext);
+  const { data } = useContext(EntriesContext);
 
   const classes = useStyles();
 
   return (
     <div>
       <List className={classes.root}>
-        {entries.map((entry) => (
+        {data.entries.map((entry) => (
           <ListItemDisplay
             entry={entry}
             key={entry.id}

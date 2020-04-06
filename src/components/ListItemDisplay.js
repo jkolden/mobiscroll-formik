@@ -37,8 +37,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ListItemDisplay(props) {
-  const [entries, setEntries] = useContext(EntriesContext);
-
   const { entry, filter, essId } = props;
   const classes = useStyles();
 

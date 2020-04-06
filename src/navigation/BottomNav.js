@@ -6,7 +6,7 @@ import {
   BottomNavigation,
   BottomNavigationAction,
   Badge,
-  StyledBadge
+  StyledBadge,
 } from "@material-ui/core";
 import "@mobiscroll/react-lite/dist/css/mobiscroll.min.css";
 
@@ -18,8 +18,6 @@ import PieChartIcon from "@material-ui/icons/PieChart";
 import Home from "@material-ui/icons/Home";
 
 function BottomNav({ val, onChange }) {
-  const [entries, setEntries] = useContext(EntriesContext);
-
   return (
     <BottomNavigation value={val} onChange={(e, tab) => onChange(tab)}>
       <BottomNavigationAction

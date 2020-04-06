@@ -36,59 +36,12 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     margin: ".5em",
   },
-  toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
-  },
-  toolbarIcon: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    padding: "0 8px",
-    ...theme.mixins.toolbar,
-  },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: 36,
-  },
-  menuButtonHidden: {
-    display: "none",
-  },
-  title: {
-    flexGrow: 1,
-  },
-  drawerPaper: {
-    position: "relative",
-    whiteSpace: "nowrap",
-    width: drawerWidth,
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerPaperClose: {
-    overflowX: "hidden",
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    width: theme.spacing(7),
-    [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(9),
-    },
   },
   appBarSpacer: theme.mixins.toolbar,
   content: {
@@ -112,9 +65,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function DailySummary({ match }) {
-  const [entries, setEntries] = useContext(EntriesContext);
+  const { data, fetchEntries, filter, handleSubmit, sum } = useContext(
+    EntriesContext
+  );
   const [total, setTotal] = useState();
-  const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
 
   const history = useHistory();
@@ -124,41 +78,11 @@ export default function DailySummary({ match }) {
 
   let utcDate = utcDateParamFormat(localDate); //coverts back to UTC
 
-  const sum = entries.reduce(function (tot, record) {
-    return tot + record.hours;
-  }, 0);
-
-  const filter = (id) => {
-    const filtered = entries.filter((entry) => entry.id !== id);
-    setEntries(filtered);
-
-    fetch(`https://apex.oracle.com/pls/apex/myfusion/bdo/timerecord/${id}`, {
-      method: "DELETE",
-    });
-  };
-
   useEffect(() => {
+    fetchEntries(utcDate);
+
     localStorage.setItem("utcDate", paramDate);
-    setLoading(true);
-
-    fetch(
-      `https://apex.oracle.com/pls/apex/myfusion/bdo/summary/?timecard_date=${utcDate}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        setEntries(data.entries);
-        setTotal(sum);
-        setLoading(false);
-      });
   }, []);
-
-  const handleSubmit = () => {
-    fetch("https://apex.oracle.com/pls/apex/myfusion/bdo/timecard_submit/", {
-      method: "POST",
-      body: JSON.stringify({ timecard_date: utcDate }),
-    }).then((res) => console.log(res));
-  };
 
   const handleRedirect = () => {
     history.push(`/form/${localStorage.getItem("utcDate")}`);

@@ -19,26 +19,26 @@ import "@mobiscroll/react-lite/dist/css/mobiscroll.min.css";
 
 import Tasks from "../assets/static/Tasks";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   button: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
   },
   input: {
-    display: "none"
-  }
+    display: "none",
+  },
 }));
 
 function Form({ match }) {
   const [projectValid, setProjectValid] = useState(true);
   const [taskValid, setTaskValid] = useState(true);
 
-  const [entries, setEntries] = useContext(EntriesContext);
+  const { data } = useContext(EntriesContext);
   const classes = useStyles();
 
   const [hourlyEntry, setHourlyEntry] = useState({
     hours: "",
     locality: "Chicago",
-    worktype: "External"
+    worktype: "External",
   });
 
   const history = useHistory();
@@ -51,7 +51,7 @@ function Form({ match }) {
   useEffect(() => {
     localStorage.setItem("utcDate", paramDate);
     if (match.params.id) {
-      let entry = entries.find(entry => entry.id == match.params.id);
+      let entry = data.entries.find((entry) => entry.id == match.params.id);
       setHourlyEntry(entry);
     }
   }, []);
@@ -60,17 +60,17 @@ function Form({ match }) {
     history.goBack();
   };
 
-  const handleNumberChange = name => event => {
+  const handleNumberChange = (name) => (event) => {
     setHourlyEntry({
       ...hourlyEntry,
-      [name]: event.target.valueAsNumber
+      [name]: event.target.valueAsNumber,
     });
   };
 
-  const handleChange = name => event => {
+  const handleChange = (name) => (event) => {
     setHourlyEntry({
       ...hourlyEntry,
-      [name]: event.target.value
+      [name]: event.target.value,
     });
 
     if (name === "project" && event.target.value) {
@@ -83,7 +83,7 @@ function Form({ match }) {
     }
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = (event) => {
     //check that user entered values for project and task
     if (!hourlyEntry["project"]) {
       event.preventDefault();
@@ -103,8 +103,8 @@ function Form({ match }) {
 
     fetch("https://apex.oracle.com/pls/apex/myfusion/bdo/web_hours/", {
       method: "POST",
-      body: JSON.stringify(myentries)
-    }).then(res => {
+      body: JSON.stringify(myentries),
+    }).then((res) => {
       if (res.status == 200) {
         history.push(`/dailysummary/${localStorage.getItem("utcDate")}`);
       }
