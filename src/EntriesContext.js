@@ -2,12 +2,12 @@ import React, { useState, createContext } from "react";
 
 export const EntriesContext = createContext();
 
-export const EntriesProvider = props => {
+export const EntriesProvider = ({ children }) => {
   const [entries, setEntries] = useState([]);
 
   return (
     <EntriesContext.Provider value={[entries, setEntries]}>
-      {props.children}
+      {children}
     </EntriesContext.Provider>
   );
 };
