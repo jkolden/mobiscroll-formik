@@ -66,21 +66,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
   const [selectedDays, setSelectedDays] = useState(DefaultDate);
-  const [timecards, setTimecards] = useState([]);
-  const { data } = useContext(EntriesContext);
+  const { fetchTimecards, timecards } = useContext(EntriesContext);
 
   useEffect(() => {
     let startDay;
     startDay =
       selectedDays.length > 0
         ? selectedDays[0].toLocaleDateString()
-        : "3/15/2020";
+        : "4/5/2020";
 
-    fetch(
-      `https://apex.oracle.com/pls/apex/myfusion/bdo/web_sheets/?start_date=${startDay}`
-    )
-      .then((res) => res.json())
-      .then((data) => setTimecards(data.items));
+    fetchTimecards(startDay);
   }, [selectedDays]);
 
   const classes = useStyles();

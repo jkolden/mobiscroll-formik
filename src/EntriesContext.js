@@ -1,11 +1,22 @@
 import React, { useState, createContext } from "react";
 import { useHistory } from "react-router-dom";
+import DefaultDate from "./utilities/DefaultDate";
 
 export const EntriesContext = createContext();
 
 export const EntriesProvider = ({ children }) => {
   const [data, setData] = useState({ entries: [] });
+  const [timecards, setTimecards] = useState([]);
+  const [selectedDays, setSelectedDays] = useState(DefaultDate);
   const history = useHistory();
+
+  const fetchTimecards = (startDay) => {
+    fetch(
+      `https://apex.oracle.com/pls/apex/myfusion/bdo/web_sheets/?start_date=${startDay}`
+    )
+      .then((res) => res.json())
+      .then((data) => setTimecards(data.items));
+  };
 
   const fetchEntries = (utcDate) => {
     //TODO: add loading property
@@ -29,26 +40,29 @@ export const EntriesProvider = ({ children }) => {
   };
 
   const handleSubmit = (utcDate) => {
+    let startDay =
+      selectedDays.length > 0
+        ? selectedDays[0].toLocaleDateString()
+        : "4/5/2020";
     history.push("/");
 
     setData((previous) => ({
       ...previous,
       loading: true,
     }));
-    setTimeout(function () {
-      setData((previous) => ({
-        ...previous,
-        loading: false,
-      }));
-    }, 10000);
 
-    /*
     fetch("https://apex.oracle.com/pls/apex/myfusion/bdo/timecard_submit/", {
       method: "POST",
       body: JSON.stringify({ timecard_date: utcDate }),
-    }).then((res) => console.log(res));
-  };
-  */
+    }).then((res) => {
+      if (res.status) {
+        setData((previous) => ({
+          ...previous,
+          loading: false,
+        }));
+        fetchTimecards(startDay);
+      }
+    });
   };
 
   const sum = data.entries.reduce(function (tot, record) {
@@ -60,8 +74,10 @@ export const EntriesProvider = ({ children }) => {
       value={{
         data: data,
         fetchEntries: fetchEntries,
+        fetchTimecards: fetchTimecards,
         filter: filter,
         handleSubmit: handleSubmit,
+        timecards: timecards,
         sum: sum,
       }}
     >
