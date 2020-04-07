@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Projects from "../assets/static/Projects";
 
 /* import mobiscroll */
@@ -19,7 +19,7 @@ export default function ProjectSelect({ hourlyEntry, handleChange, valid }) {
       <option disabled value="">
         Select
       </option>
-      {Projects.map(project => (
+      {Projects.map((project) => (
         <option key={Object.keys(project)} value={Object.keys(project)}>
           {`${Object.values(project)}`}
         </option>

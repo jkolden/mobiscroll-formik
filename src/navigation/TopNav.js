@@ -8,30 +8,34 @@ import {
   SwipeableDrawer,
   Dialog,
   Slide,
-  Icon
+  Icon,
 } from "@material-ui/core";
 import {
   Menu,
   KeyboardBackspace,
   Favorite,
   Brightness4,
-  Brightness7
+  Brightness7,
 } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 
 import emily from "../assets/images/emily.jpg";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   title: {
     flexGrow: 1,
-    marginLeft: theme.spacing(2)
-  }
+    marginLeft: theme.spacing(2),
+  },
+  wrapIcon: {
+    verticalAlign: "middle",
+    marginLeft: theme.spacing(2),
+  },
 }));
 
 const SlideTransition = React.forwardRef(function TransitionComponent(
@@ -84,9 +88,6 @@ export default function TopNav({ themeMode, lightMode, darkMode }) {
         <IconButton onClick={() => setDialogueOpen(false)}>
           <KeyboardBackspace />
         </IconButton>
-        <p>
-          Built with <Favorite /> by Demo Engineering and Proposals
-        </p>
       </Dialog>
     </AppBar>
   );

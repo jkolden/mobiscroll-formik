@@ -18,8 +18,6 @@ import Spinner from "../hooks/Spinner";
 
 import utcDateParamFormat from "../utilities/utcDateParamFormat";
 
-const drawerWidth = 240;
-
 const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
@@ -65,11 +63,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function DailySummary({ match }) {
-  const { data, fetchEntries, filter, handleSubmit, sum } = useContext(
+  const { data, fetchEntries, filter, handleSubmit, sum, loading } = useContext(
     EntriesContext
   );
   const [total, setTotal] = useState();
-  const [loading, setLoading] = useState(false);
 
   const history = useHistory();
 

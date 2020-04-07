@@ -12,7 +12,7 @@ const useStyles = makeStyles({
 
 export default function DailyHours(props) {
   const { data } = useContext(EntriesContext);
-  const { total, timeCardDate, apiSubmissionDate } = props;
+  const { timeCardDate } = props;
   const classes = useStyles();
 
   const sum = data.entries.reduce(function (tot, record) {

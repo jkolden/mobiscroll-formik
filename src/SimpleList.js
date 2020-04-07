@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { EntriesContext } from "./EntriesContext";
-import mobiscroll from "@mobiscroll/react-lite";
 import "@mobiscroll/react-lite/dist/css/mobiscroll.min.css";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
@@ -19,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SimpleList(props) {
-  const { setTotal, sum, filter, essId } = props;
+  const { filter, essId } = props;
   const { data } = useContext(EntriesContext);
 
   const classes = useStyles();

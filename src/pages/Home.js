@@ -16,8 +16,6 @@ import DefaultDate from "../utilities/DefaultDate";
 import WeekSelectorHooks from "../components/WeekSelectorHooks";
 import Timecards from "../components/Timecards";
 
-const drawerWidth = 240;
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",

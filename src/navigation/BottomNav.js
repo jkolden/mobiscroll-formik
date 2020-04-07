@@ -1,18 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { EntriesContext } from "../EntriesContext";
 /* import mobiscroll */
-import {
-  BottomNavigation,
-  BottomNavigationAction,
-  Badge,
-  StyledBadge,
-} from "@material-ui/core";
+import { BottomNavigation, BottomNavigationAction } from "@material-ui/core";
 import "@mobiscroll/react-lite/dist/css/mobiscroll.min.css";
 
 /* Icons */
 
-import List from "@material-ui/icons/List";
 import Settings from "@material-ui/icons/Settings";
 import PieChartIcon from "@material-ui/icons/PieChart";
 import Home from "@material-ui/icons/Home";

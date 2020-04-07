@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Tasks from "../assets/static/Tasks";
 
 /* import mobiscroll */
@@ -20,7 +20,7 @@ export default function TaskSelect({ hourlyEntry, handleChange, valid }) {
         Select
       </option>
       {hourlyEntry["project"] &&
-        Tasks[hourlyEntry["project"]].map(obj => (
+        Tasks[hourlyEntry["project"]].map((obj) => (
           <option key={Object.keys(obj)} value={Object.keys(obj)}>
             {`${Object.values(obj)}`}
           </option>

@@ -4,7 +4,7 @@ import {
   BrowserRouter as Router,
   Link,
   Switch,
-  Route
+  Route,
 } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import mobiscroll from "@mobiscroll/react-lite";
@@ -30,21 +30,20 @@ import { EntriesProvider } from "./EntriesContext";
 const containerStyles = {
   height: "calc(100vh - 112px)",
   overflow: "auto",
-  textAlign: "center"
+  textAlign: "center",
 };
 
 const App = () => {
   const [themeMode, setThemeMode] = useState("dark");
   const [tab, setTab] = useState(0);
-  let hist = createBrowserHistory();
 
   let theme = createMuiTheme({
     palette: {
       type: themeMode,
       primary: {
-        main: themeMode === "light" ? "#2196f3" : "#111"
-      }
-    }
+        main: themeMode === "light" ? "#2196f3" : "#111",
+      },
+    },
   });
 
   useEffect(() => {
@@ -55,7 +54,7 @@ const App = () => {
       //mobiscroll theme
       mobiscroll.settings = {
         theme: "ios",
-        themeVariant: themePreference
+        themeVariant: themePreference,
       };
     }
   }, []);
@@ -67,7 +66,7 @@ const App = () => {
 
     mobiscroll.settings = {
       theme: "ios",
-      themeVariant: "light"
+      themeVariant: "light",
     };
   };
 
@@ -77,7 +76,7 @@ const App = () => {
     localStorage.setItem("theme", "dark");
     mobiscroll.settings = {
       theme: "ios",
-      themeVariant: "dark"
+      themeVariant: "dark",
     };
   };
 

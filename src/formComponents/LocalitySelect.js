@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import Projects from "../assets/static/Projects";
+import React from "react";
 
 /* import mobiscroll */
 import mobiscroll from "@mobiscroll/react-lite";

@@ -5,6 +5,7 @@ import DefaultDate from "./utilities/DefaultDate";
 export const EntriesContext = createContext();
 
 export const EntriesProvider = ({ children }) => {
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState({ entries: [] });
   const [timecards, setTimecards] = useState([]);
   const [selectedDays, setSelectedDays] = useState(DefaultDate);
@@ -19,12 +20,15 @@ export const EntriesProvider = ({ children }) => {
   };
 
   const fetchEntries = (utcDate) => {
-    //TODO: add loading property
+    setLoading(true);
     fetch(
       `https://apex.oracle.com/pls/apex/myfusion/bdo/summary/?timecard_date=${utcDate}`
     )
       .then((res) => res.json())
-      .then((data) => setData(data));
+      .then((data) => {
+        setData(data);
+        setLoading(false);
+      });
   };
 
   const filter = (id) => {
@@ -79,6 +83,7 @@ export const EntriesProvider = ({ children }) => {
         handleSubmit: handleSubmit,
         timecards: timecards,
         sum: sum,
+        loading: loading,
       }}
     >
       {children}

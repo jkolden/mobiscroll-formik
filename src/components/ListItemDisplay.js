@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import { EntriesContext } from "../EntriesContext";
+import React from "react";
 import { Link } from "react-router-dom";
 
 import "@mobiscroll/react-lite/dist/css/mobiscroll.min.css";
@@ -19,7 +18,7 @@ import Grand from "../assets/images/GrandRapids.gif";
 import Projects from "../assets/static/Projects";
 import Tasks from "../assets/static/Tasks";
 
-import { deepOrange, deepPurple } from "@material-ui/core/colors";
+import { deepOrange } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   root: {
