@@ -6,9 +6,10 @@ export const EntriesContext = createContext();
 
 export const EntriesProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
+  const [selectedDays, setSelectedDays] = useState(DefaultDate);
   const [data, setData] = useState({ entries: [] });
   const [timecards, setTimecards] = useState([]);
-  const [selectedDays, setSelectedDays] = useState(DefaultDate);
+
   const history = useHistory();
 
   const fetchTimecards = (startDay) => {
@@ -44,10 +45,10 @@ export const EntriesProvider = ({ children }) => {
   };
 
   const handleSubmit = (utcDate) => {
-    let startDay =
-      selectedDays.length > 0
-        ? selectedDays[0].toLocaleDateString()
-        : "4/5/2020";
+    let week = DefaultDate();
+    let startDay = week[0].toLocaleDateString();
+
+    console.log(startDay);
     history.push("/");
 
     setData((previous) => ({
@@ -60,6 +61,7 @@ export const EntriesProvider = ({ children }) => {
       body: JSON.stringify({ timecard_date: utcDate }),
     }).then((res) => {
       if (res.status) {
+        console.log(res);
         setData((previous) => ({
           ...previous,
           loading: false,

@@ -12,6 +12,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useHistory } from "react-router-dom";
 
 import utcDateParamFormat from "../utilities/utcDateParamFormat";
+import LongDateFormat from "../utilities/LongDateFormat";
 
 /* import mobiscroll */
 import mobiscroll from "@mobiscroll/react-lite";
@@ -47,6 +48,8 @@ function Form({ match }) {
   const paramDate = match.params.date;
 
   const formattedDate = utcDateParamFormat(timeCardDate);
+  const dateString = timeCardDate.toDateString();
+  const longFormat = LongDateFormat(paramDate);
 
   useEffect(() => {
     localStorage.setItem("utcDate", paramDate);
@@ -113,7 +116,7 @@ function Form({ match }) {
 
   return (
     <mobiscroll.Page>
-      <h3>{formattedDate}</h3>
+      <h4>{longFormat}</h4>
       <mobiscroll.Form onSubmit={handleSubmit}>
         <mobiscroll.FormGroup>
           <mobiscroll.FormGroupTitle>

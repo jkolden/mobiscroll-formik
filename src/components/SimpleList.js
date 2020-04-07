@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
-import { EntriesContext } from "./EntriesContext";
+import { EntriesContext } from "../EntriesContext";
 import "@mobiscroll/react-lite/dist/css/mobiscroll.min.css";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 
-import ListItemDisplay from "./components/ListItemDisplay";
+import ListItemDisplay from "./ListItemDisplay";
 
 const useStyles = makeStyles((theme) => ({
   root: {

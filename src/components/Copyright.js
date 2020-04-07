@@ -12,7 +12,6 @@ function Copyright() {
         Oracle Demo Engineering
       </Link>{" "}
       {new Date().getFullYear()}
-      {"."}
     </Typography>
   );
 }

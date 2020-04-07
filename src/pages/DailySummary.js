@@ -13,10 +13,11 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import DailyHours from "../components/DailyHours";
-import SimpleList from "../SimpleList";
+import SimpleList from "../components/SimpleList";
 import Spinner from "../hooks/Spinner";
 
 import utcDateParamFormat from "../utilities/utcDateParamFormat";
+import LongDateFormat from "../utilities/LongDateFormat";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -74,6 +75,7 @@ export default function DailySummary({ match }) {
   const paramDate = match.params.date;
 
   let utcDate = utcDateParamFormat(localDate); //coverts back to UTC
+  let LongDateString = LongDateFormat(paramDate);
 
   useEffect(() => {
     fetchEntries(utcDate);
@@ -94,7 +96,7 @@ export default function DailySummary({ match }) {
       dangerMode: false,
     }).then((submitted) => {
       if (submitted) {
-        handleSubmit();
+        handleSubmit(utcDate);
         swal("Thank you, your timecard has been submitted!", {
           icon: "success",
         });
@@ -128,7 +130,7 @@ export default function DailySummary({ match }) {
                   <Paper className={fixedHeightPaper}>
                     <DailyHours
                       total={total}
-                      timeCardDate={utcDate}
+                      timeCardDate={LongDateString}
                       apiSubmissionDate={data.api_submission_date}
                     />
                   </Paper>
