@@ -1,6 +1,6 @@
 {
-  "short_name": "BDO Time Entry",
-  "name": "BDO Time Entry",
+  "short_name": "Projects Time Entry",
+  "name": "Projects Time Entry",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,12 +8,12 @@
       "type": "image/x-icon"
     },
     {
-      "src": "BDO192.png",
+      "src": "RSM192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "BDO512.png",
+      "src": "RSM512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
