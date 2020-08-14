@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: JOB_NAME-deployment
+spec:
+  selector:
+    matchLabels:
+      app: JOB_NAME
+  replicas: 1 # deployment runs 1 pods matching the template
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: JOB_NAME
+    spec:
+      containers:
+        - name: JOB_NAME
+          image: iad.ocir.io/sc30002/JOB_NAME-image:BUILD_NUMBER
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80 #Endpoint is at port 80 in the container
+      imagePullSecrets:
+        - name: ocirsecret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: JOB_NAME-service
+spec:
+  type: NodePort #Exposes the service as a node port
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: JOB_NAME
+#---
+#apiVersion: extensions/v1beta1
+#kind: Ingress
+#metadata:
+#  name: JOB_NAME-ingress
+#  namespace: default
+#  annotations:
+#    nginx.ingress.kubernetes.io/rewrite-target: /
+#spec:
+#  tls:
+#  - secretName: tls-secret
+#  rules:
+#  - http:
+#      paths:
+#      - path: /JOB_NAME
+#        backend:
+#            serviceName: JOB_NAME-service
+#            servicePort: 80
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: JOB_NAME-ingress
+  namespace: default
+spec:
+  tls:
+    - hosts:
+        - JOB_NAME.oraclepaas.com
+      secretName: tls-secret
+  rules:
+    - host: JOB_NAME.oraclepaas.com
+      http:
+        paths:
+          - backend:
+              serviceName: JOB_NAME-service
+              servicePort: 80
+            path: /
